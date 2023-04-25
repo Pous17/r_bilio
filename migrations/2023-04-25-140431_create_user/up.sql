@@ -1,0 +1,17 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    member BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    publisher VARCHAR NOT NULL,
+    borrowed BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+CREATE TABLE employees (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL
+);
