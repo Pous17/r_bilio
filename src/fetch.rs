@@ -2,8 +2,7 @@ use self::models::*;
 use diesel::prelude::*;
 use r_bilio::*;
 
-
-fn main() {
+pub fn fetch_data() {
     use self::schema::books::dsl::*;
     use self::schema::users::dsl::*;
     use self::schema::employees::dsl::*;
@@ -40,4 +39,4 @@ fn main() {
     for employee in employee_list {
         println!("{}", employee.name);
     }
-}
+} 
