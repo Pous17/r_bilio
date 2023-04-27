@@ -22,11 +22,10 @@ fn main() {
         // println!("{:?}", args);
         
         match command {
-            // "bilio_add_book" => db_mods::add_book::add_book(),
             "add" => {
                 match args {
                     "-book" => db_mods::add_book::add_book(),
-                    "-user" => {}, // add user
+                    "-user" => db_mods::add_user::add_user(),
                     "-empl" => {}, // add empl
                     _ => println!("Invalid flag, refer to 'help'")
                 }

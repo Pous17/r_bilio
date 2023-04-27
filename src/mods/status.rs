@@ -26,7 +26,7 @@ pub fn status(param: &str) {
     println!("there is currently {} books", book_list.len());
     for book in book_list {
         if param == "id" {
-        println!("{} | id: {}", book.name, book.id);
+            println!("{} | id: {}", book.name, book.id);
         } else {
             println!("{}", book.name);
         }
@@ -37,9 +37,9 @@ pub fn status(param: &str) {
     for user in user_list {
         if param == "id" {
             println!("{} | id: {}", user.name, user.id);
-            } else {
-                println!("{}", user.name);
-            }
+        } else {
+            println!("{}", user.name);
+        }
     }
 
     // Dispaly employees
@@ -47,8 +47,8 @@ pub fn status(param: &str) {
     for employee in employee_list {
         if param == "id" {
             println!("{} | id: {}", employee.name, employee.id);
-            } else {
-                println!("{}", employee.name);
-            }
+        } else {
+            println!("{}", employee.name);
+        }
     }
 } 

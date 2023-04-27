@@ -15,3 +15,11 @@ CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL
 );
+
+CREATE TABLE borrows (
+    id SERIAL PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (book_id) REFERENCES books(id)
+)
