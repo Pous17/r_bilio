@@ -30,9 +30,15 @@ fn main() {
                     "-empl" => {}, // add empl
                     _ => println!("Invalid flag, refer to 'help'")
                 }
-            }
+            },
+            "borrow" => db_mods::borrow_book::borrow_book(),
             "help" => mods::help::help(),
-            "status" => mods::status::status(),
+            "status" => {
+                match args {
+                    "-id" => mods::status::status("id"),
+                    _ => mods::status::status("")
+                }
+            }
             "exit" => return,
             "" => {},
             _ => println!("Unkonwed command, enter 'bilio_help'\n")
