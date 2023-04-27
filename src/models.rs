@@ -1,4 +1,5 @@
 use diesel::prelude::*;
+use crate::schema::*;
 
 #[derive(Queryable)]
 pub struct Books {
@@ -19,4 +20,12 @@ pub struct Users {
     pub id: i32,
     pub name: String,
     pub member: bool,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = books)]
+pub struct NewBook<'a> {
+    pub name: &'a str,
+    pub publisher: &'a str,
+    pub borrowed: &'a bool,
 }

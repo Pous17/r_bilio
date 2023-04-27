@@ -2,7 +2,7 @@ use self::models::*;
 use diesel::prelude::*;
 use r_bilio::*;
 
-pub fn fetch_data() {
+pub fn status() {
     use self::schema::books::dsl::*;
     use self::schema::users::dsl::*;
     use self::schema::employees::dsl::*;
