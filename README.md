@@ -18,7 +18,7 @@ diesel migration run
 
 ## Launch
 ```
-cargo run --bin front
+cargo run
 ```
 
 ### Usefull commands
