@@ -1,26 +1,11 @@
-use self::models::*;
-use diesel::prelude::*;
-use r_bilio::*;
+use super::super::db_mods::fetch_db::*;
 
 pub fn status(param: &str) {
-    use self::schema::books::dsl::*;
-    use self::schema::users::dsl::*;
-    use self::schema::employees::dsl::*;
+    let lists = fetch();
 
-    let connection = &mut connection();
-
-    // Fetching data
-    let book_list = books
-        .load::<Books>(connection)
-        .expect("Error loading books");
-
-    let user_list = users
-        .load::<Users>(connection)
-        .expect("Error loading users");
-
-    let employee_list = employees
-        .load::<Employees>(connection)
-        .expect("Error loading employees");
+    let book_list = lists.0;
+    let user_list = lists.1;
+    let employee_list = lists.2;
 
     // Display books
     println!("there is currently {} books", book_list.len());
