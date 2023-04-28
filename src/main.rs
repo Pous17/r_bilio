@@ -4,8 +4,8 @@ use std::io::{stdin, stdout, Write};
 mod mods;
 mod db_mods;
 fn main() {
-
     println!("\n---------- R Bilio Manager ----------\n");
+    println!("Enter 'help' for help.");
 
     loop {
         print!("r_bilio > ");
@@ -21,16 +21,23 @@ fn main() {
         // println!("{}", command);
         // println!("{:?}", args);
         
-        match command {
+        match command.trim_end() {
             "add" => {
                 match args {
                     "-book" => db_mods::add_book::add_book(),
                     "-user" => db_mods::add_user::add_user(),
                     "-empl" => {}, // add empl
-                    _ => println!("Invalid flag, refer to 'help'")
+                    _ => println!("Unknown flag, refer to 'help'")
                 }
             },
-            "borrow" => db_mods::borrow_book::borrow_book(),
+            "borrow" => {
+                match args {
+                    "-list" => mods::borrow_list::list(""),
+                    "-list-id" => mods::borrow_list::list("id"),
+                    "" => db_mods::borrow_book::borrow_book(),
+                    _ => println!("Unknown flag, refer to 'help'")
+                }
+            },
             "help" => mods::help::help(),
             "status" => {
                 match args {
@@ -40,7 +47,7 @@ fn main() {
             }
             "exit" => return,
             "" => {},
-            _ => println!("Unkonwed command, enter 'bilio_help'\n")
+            _ => println!("Unknown command, enter 'bilio_help'\n")
         }
     }
 }

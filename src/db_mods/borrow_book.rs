@@ -1,20 +1,16 @@
-use diesel::prelude::*;
 use r_bilio::*;
-use self::models::*;
 use std::io::{stdin, stdout, Write};
+use super::fetch_db::*;
 
 pub fn borrow_book() {
-    use self::schema::books::dsl::*;
+    let lists = fetch();
+    let book_list = lists.0;
 
     let connection = &mut connection();
 
-    let book_list = books
-        .load::<Books>(connection)
-        .expect("Error loading books");
-
     println!("\nList of currently available books");
     println!("--------------");
-    for book in book_list {
+    for book in &book_list {
         if !book.borrowed {
             println!("{} | id: {}", book.name, book.id);
         }
@@ -26,17 +22,29 @@ pub fn borrow_book() {
         stdout().flush().unwrap();
 
         // String input
-        let mut input = String::new();
-        stdin().read_line(&mut input).unwrap();
+        let mut book_input = String::new();
+        stdin().read_line(&mut book_input).unwrap();
 
-        let book_id = input.trim_end().parse::<i32>().unwrap_or(-1);
+        // i32 parsing
+        let book_id = book_input.trim_end().parse::<i32>().unwrap_or(-1);
 
-        if book_id == -1 {
+        print!("Your user id: ");
+        stdout().flush().unwrap();
+
+        // String input
+        let mut user_input = String::new();
+        stdin().read_line(&mut user_input).unwrap();
+
+        // i32 parsing
+        let user_id = user_input.trim_end().parse::<i32>().unwrap_or(-1);
+
+
+        if book_id == -1 || user_id == -1 {
             println!("Enter a valid number")
         } else {
             // call borrow function
-            let borrow = create_borrow(connection, &1, &book_id);
-            println!("{}", borrow.id);
+            let borrow = create_borrow(connection, &user_id, &book_id);
+            println!("You borrowed {}, the borrow id is {}", book_list[book_id as usize - 1].name ,borrow.id);
             return
         }
     }
