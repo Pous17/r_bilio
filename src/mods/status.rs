@@ -8,7 +8,8 @@ pub fn status(param: &str) {
     let employee_list = lists.2;
 
     // Display books
-    println!("there is currently {} books", book_list.len());
+    println!("\nthere is currently {} books", book_list.len());
+    println!("--------------");
     for book in book_list {
         if param == "id" {
             println!("{} | id: {}", book.name, book.id);
@@ -18,7 +19,8 @@ pub fn status(param: &str) {
     }
 
     // Display users
-    println!("there is currently {} users", user_list.len());
+    println!("\nthere is currently {} users", user_list.len());
+    println!("--------------");
     for user in user_list {
         if param == "id" {
             println!("{} | id: {}", user.name, user.id);
@@ -28,7 +30,8 @@ pub fn status(param: &str) {
     }
 
     // Dispaly employees
-    println!("there is currently {} employees", employee_list.len());
+    println!("\nthere is currently {} employees", employee_list.len());
+    println!("--------------");
     for employee in employee_list {
         if param == "id" {
             println!("{} | id: {}", employee.name, employee.id);

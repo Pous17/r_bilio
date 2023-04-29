@@ -50,3 +50,9 @@ pub struct NewUser<'a> {
     pub name: &'a str,
     pub member: &'a bool,
 }
+
+#[derive(Insertable)]
+#[diesel(table_name = employees)]
+pub struct NewEmployees<'a> {
+    pub name: &'a str,
+}

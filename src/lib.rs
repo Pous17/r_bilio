@@ -2,7 +2,7 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
-use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser};
+use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser, Employees, NewEmployees};
 
 pub mod schema;
 pub mod models;
@@ -48,5 +48,24 @@ pub fn create_user(conn: &mut PgConnection, name: &str, member: &bool) -> Users 
         .get_result(conn)
         .expect("Error creating a user")
 }
+
+pub fn create_employee(conn: &mut PgConnection, name: &str) -> Employees {
+    use crate::schema::employees;
+
+    let new_employee = NewEmployees {name};
+
+    diesel::insert_into(employees::table)
+        .values(new_employee)
+        .get_result(conn)
+        .expect("Error creating a user")
+}
+
+// pub fn avail_status(conn: &mut PgConnection, borrowed: &bool) -> Books {
+//     use crate::schema::books;
+
+//     let new_status = NewStatus {borrowed};
+
+//     diesel::update(source)
+// } 
 
 // add change book availability 

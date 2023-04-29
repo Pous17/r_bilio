@@ -17,16 +17,13 @@ fn main() {
         let mut parts = input.trim().split_whitespace();
         let command = parts.next().unwrap_or("");
         let args = parts.last().unwrap_or("");
-
-        // println!("{}", command);
-        // println!("{:?}", args);
         
-        match command.trim_end() {
+        match command {
             "add" => {
                 match args {
                     "-book" => db_mods::add_book::add_book(),
                     "-user" => db_mods::add_user::add_user(),
-                    "-empl" => {}, // add empl
+                    "-empl" => db_mods::add_employee::add_employee(),
                     _ => println!("Unknown flag, refer to 'help'")
                 }
             },
@@ -38,16 +35,16 @@ fn main() {
                     _ => println!("Unknown flag, refer to 'help'")
                 }
             },
-            "help" => mods::help::help(),
             "status" => {
                 match args {
                     "-id" => mods::status::status("id"),
                     _ => mods::status::status("")
                 }
-            }
+            },
+            "help" => mods::help::help(),
             "exit" => return,
             "" => {},
-            _ => println!("Unknown command, enter 'bilio_help'\n")
+            _ => println!("Unknown command, enter 'help'\n")
         }
     }
 }
