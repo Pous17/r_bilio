@@ -5,6 +5,7 @@ use super::fetch_db::*;
 pub fn borrow_book() {
     let lists = fetch();
     let book_list = lists.0;
+    let mut borrowed_books = Vec::<bool>::new();
 
     let connection = &mut connection();
 
@@ -14,6 +15,12 @@ pub fn borrow_book() {
         if !book.borrowed {
             println!("{} | id: {}", book.name, book.id);
         }
+        borrowed_books.push(book.borrowed);
+    }
+
+    if borrowed_books.iter().all(|&x| x == true) {
+        println!("There is no currently available book\n");
+        return
     }
 
     loop {
@@ -40,14 +47,16 @@ pub fn borrow_book() {
 
 
         if book_id == -1 || user_id == -1 {
-            println!("Enter a valid number")
+            println!("Enter a valid number");
+        } else if book_list[book_id as usize - 1].borrowed {
+            println!("This Book is not available");
         } else {
             // call borrow function
             let borrow = create_borrow(connection, &user_id, &book_id);
             println!("You borrowed {}, the borrow id is {}", book_list[book_id as usize - 1].name ,borrow.id);
 
             // change book availability status
-            avail_status(connection, &book_id);
+            avail_status(connection, &book_id, &true);
             return
         }
     }
