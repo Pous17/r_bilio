@@ -60,12 +60,11 @@ pub fn create_employee(conn: &mut PgConnection, name: &str) -> Employees {
         .expect("Error creating a user")
 }
 
-// pub fn avail_status(conn: &mut PgConnection, borrowed: &bool) -> Books {
-//     use crate::schema::books;
+pub fn avail_status(conn: &mut PgConnection, id: &i32) {
+    use self::schema::books::dsl::{books, borrowed};
 
-//     let new_status = NewStatus {borrowed};
-
-//     diesel::update(source)
-// } 
-
-// add change book availability 
+    diesel::update(books.find(id))
+        .set(borrowed.eq(true))
+        .get_result::<Books>(conn)
+        .unwrap();
+}

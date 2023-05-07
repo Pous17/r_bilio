@@ -45,6 +45,9 @@ pub fn borrow_book() {
             // call borrow function
             let borrow = create_borrow(connection, &user_id, &book_id);
             println!("You borrowed {}, the borrow id is {}", book_list[book_id as usize - 1].name ,borrow.id);
+
+            // change book availability status
+            avail_status(connection, &book_id);
             return
         }
     }
