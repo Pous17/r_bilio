@@ -17,6 +17,8 @@ pub fn help() {
             - status -> get the current status of the bilio
             - status -> params ->
                 - '-id' -> current status with id
+                
+            - populate -> populates the database with desired number of items
     ";
     println!("{}", multiline_string);
 }

@@ -41,6 +41,7 @@ fn main() {
                     _ => mods::status::status("")
                 }
             },
+            "populate" => db_mods::populate::populate(),
             "help" => mods::help::help(),
             "exit" => return,
             "" => {},
