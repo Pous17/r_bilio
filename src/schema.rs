@@ -14,6 +14,7 @@ diesel::table! {
         id -> Int4,
         user_id -> Int4,
         book_id -> Int4,
+        borrow_date -> Varchar,
     }
 }
 

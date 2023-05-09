@@ -14,6 +14,7 @@ pub struct Borrows {
     pub id: i32,
     pub user_id: i32,
     pub book_id: i32,
+    pub borrow_date: String,
 }
 
 #[derive(Queryable)]
@@ -42,6 +43,7 @@ pub struct NewBook<'a> {
 pub struct NewBorrow<'a> {
     pub user_id: &'a i32,
     pub book_id: &'a i32,
+    pub borrow_date: &'a str,
 }
 
 #[derive(Insertable)]

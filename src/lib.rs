@@ -27,10 +27,10 @@ pub fn create_book(conn: &mut PgConnection, name: &str, publisher: &str, borrowe
         .expect("Error adding new book")
 }
 
-pub fn create_borrow(conn: &mut PgConnection, user_id: &i32, book_id: &i32) -> Borrows {
+pub fn create_borrow(conn: &mut PgConnection, user_id: &i32, book_id: &i32, borrow_date: &str) -> Borrows {
     use crate::schema::borrows;
  
-    let new_borrow = NewBorrow {user_id, book_id};
+    let new_borrow = NewBorrow {user_id, book_id, borrow_date};
 
     diesel::insert_into(borrows::table)
         .values(new_borrow)
