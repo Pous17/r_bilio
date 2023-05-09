@@ -13,9 +13,11 @@ pub fn status(param: &str) {
         println!("--------------");
         for book in book_list {
             if param.contains("-id") {
-            println!("{} | id: {}", book.name, book.id);
+                println!("{} | id: {}", book.name, book.id);
+            } else if param.contains("-info") {
+                println!("{} | {} | Currently borrowed: {}", book.name, book.publisher, book.borrowed)
             } else {
-            println!("{}", book.name);
+                println!("{}", book.name);
             }
         }
     } 
@@ -27,6 +29,8 @@ pub fn status(param: &str) {
         for user in user_list {
             if param.contains("-id") {
                 println!("{} | id: {}", user.name, user.id);
+            } else if param.contains("-info") {
+                println!("{} | Is a member: {}", user.name, user.member);
             } else {
                 println!("{}", user.name);
             }
@@ -46,4 +50,3 @@ pub fn status(param: &str) {
         }
     }        
     }
-    

@@ -46,6 +46,7 @@ fn main() {
                     "-user-id" => mods::status::status("user -id"),
                     "-empl-id" => mods::status::status("empl -id"),
                     "-id" => mods::status::status("all -id"),
+                    "-info" => mods::status::status("all -info"),
                     _ => mods::status::status("all")
                 }
             },

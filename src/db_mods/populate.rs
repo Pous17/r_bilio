@@ -26,7 +26,7 @@ pub fn populate() {
         for i in 1..=number {
             // Books
             let book_name = format!("Book {}", i);
-            let publisher_name = format!("Book {}", i);
+            let publisher_name = format!("Pub {}", i);
             create_book(connection, &book_name, &publisher_name, &false);
 
             // Users
