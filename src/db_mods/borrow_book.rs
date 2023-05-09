@@ -68,7 +68,7 @@ pub fn borrow_book() {
             println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
 
             // change book availability status
-            avail_status(connection, &book_id, &true);
+            borrow_status(connection, &book_id, &true);
             return
         }
     }

@@ -37,6 +37,7 @@ fn main() {
                     _ => println!("Unknown flag, refer to 'help'")
                 }
             },
+            "return" => db_mods::return_book::return_book(),
             "status" => {
                 match args {
                     "-book" => mods::status::status("book"),

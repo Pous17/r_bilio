@@ -60,7 +60,15 @@ pub fn create_employee(conn: &mut PgConnection, name: &str) -> Employees {
         .expect("Error creating a user")
 }
 
-pub fn avail_status(conn: &mut PgConnection, id: &i32, param: &bool) {
+pub fn delete_borrow(conn: &mut PgConnection, borrow_id: &i32) {
+    use self::schema::borrows::dsl::*;
+
+    diesel::delete(borrows.find(borrow_id))
+    .get_result::<Borrows>(conn)
+    .unwrap();
+}
+
+pub fn borrow_status(conn: &mut PgConnection, id: &i32, param: &bool) {
     use self::schema::books::dsl::{books, borrowed};
 
     diesel::update(books.find(id))
