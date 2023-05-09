@@ -4,7 +4,8 @@ pub fn list(param: &str) {
     let lists = fetch();
     let borrow_list = lists.3;
 
-    println!("there is currently {} books", borrow_list.len());
+    println!("there is currently {} borrows", borrow_list.len());
+    println!("--------------");
     for borrow in borrow_list {
         if param == "id" {
             println!("Borrower: {} | Book: {} | Borrow id: {}", borrow.user_id, borrow.book_id, borrow.id);

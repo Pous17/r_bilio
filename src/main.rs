@@ -39,8 +39,14 @@ fn main() {
             },
             "status" => {
                 match args {
-                    "-id" => mods::status::status("id"),
-                    _ => mods::status::status("")
+                    "-book" => mods::status::status("book"),
+                    "-user" => mods::status::status("user"),
+                    "-empl" => mods::status::status("empl"),
+                    "-book-id" => mods::status::status("book -id"),
+                    "-user-id" => mods::status::status("user -id"),
+                    "-empl-id" => mods::status::status("empl -id"),
+                    "-id" => mods::status::status("all -id"),
+                    _ => mods::status::status("all")
                 }
             },
             "populate" => db_mods::populate::populate(),
