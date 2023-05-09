@@ -10,6 +10,7 @@ pub fn borrow_book() {
 
     let connection = &mut connection();
 
+    // Available book list
     println!("\nList of currently available books");
     println!("--------------");
     for book in &book_list {
@@ -46,7 +47,7 @@ pub fn borrow_book() {
         // i32 parsing
         let user_id = user_input.trim_end().parse::<i32>().unwrap_or(-1);
 
-        // Date
+        // Date with conversion to ISO 8601
         let date = Local::now();
         let str_date = date.format("%Y-%m-%d").to_string();
         let borrow_date = str_date.trim();
