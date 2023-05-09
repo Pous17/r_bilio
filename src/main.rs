@@ -31,6 +31,8 @@ fn main() {
                 match args {
                     "-list" => mods::borrow_list::list(""),
                     "-list-id" => mods::borrow_list::list("id"),
+                    "-list-date" => mods::borrow_list::list("date"),
+                    "-list-id-date" => mods::borrow_list::list("id-date"),
                     "" => db_mods::borrow_book::borrow_book(),
                     _ => println!("Unknown flag, refer to 'help'")
                 }
