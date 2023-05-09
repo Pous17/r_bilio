@@ -1,7 +1,7 @@
 use r_bilio::*;
 use std::io::{stdin, stdout, Write};
 use super::fetch_db::*;
-use chrono::Local;
+use chrono::{Local, Duration};
 
 pub fn borrow_book() {
     let lists = fetch();
@@ -49,8 +49,13 @@ pub fn borrow_book() {
 
         // Date with conversion to ISO 8601
         let date = Local::now();
+        let r_date = date + Duration::days(7);
+
         let str_date = date.format("%Y-%m-%d").to_string();
         let borrow_date = str_date.trim();
+
+        let r_str_date = r_date.format("%Y-%m-%d").to_string();
+        let return_date = r_str_date.trim();
 
         if book_id == -1 || user_id == -1 {
             println!("Enter a valid number");
@@ -60,6 +65,7 @@ pub fn borrow_book() {
             // call borrow function
             let borrow = create_borrow(connection, &user_id, &book_id, &borrow_date);
             println!("You borrowed {}, the borrow id is {}", book_list[book_id as usize - 1].name, borrow.id);
+            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
 
             // change book availability status
             avail_status(connection, &book_id, &true);
