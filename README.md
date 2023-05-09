@@ -1,9 +1,16 @@
 # Rbiblio
 
 ## Install
-rustc
-cargo
-diesel
+### Rust
+https://www.rust-lang.org/tools/install
+
+### Cargo
+https://doc.rust-lang.org/cargo/getting-started/installation.html
+
+### Diesel
+```
+cargo install diesel_cli
+```
 
 ## Setup
 ```
