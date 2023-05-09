@@ -49,11 +49,20 @@ pub fn return_book() {
         } else if !borrow_id_list.contains(&borrow_id) {
             println!("The id you entered probably does not exist")
         } else {
-            // Change the book availability status
+            
             if let Some(borrow) = borrow_list.iter().find(|x| x.id == borrow_id) {
                 let _book_id = borrow.book_id;
+                let _user_id = borrow.user_id;
+                let _borrow_date = &borrow.borrow_date;
+
+                // Change the book availability status
                 borrow_status(connection, &_book_id, &false);
+
+                // Add borrow to logs
+                add_past_borrow(connection, &_user_id, &_book_id, &choice, &_borrow_date, &return_date);              
             }
+
+
 
             // Delete borrow from current borrows
             delete_borrow(connection, &borrow_id);
@@ -61,6 +70,5 @@ pub fn return_book() {
 
             return
         }
-
     }
 }

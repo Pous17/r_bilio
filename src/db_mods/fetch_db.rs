@@ -2,7 +2,7 @@ use self::models::*;
 use diesel::prelude::*;
 use r_bilio::*;
 
-pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>) {
+pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<PastBorrows>) {
     use self::schema::books::dsl::*;
     use self::schema::books::dsl::id as book_id;
     use self::schema::users::dsl::*;
@@ -11,6 +11,8 @@ pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>) {
     use self::schema::employees::dsl::id as empl_id;
     use self::schema::borrows::dsl::*;
     use self::schema::borrows::dsl::id as borrow_id;
+    use self::schema::past_borrows::dsl::*;
+    use self::schema::past_borrows::dsl::id as past_borrows_id;
 
     let connection = &mut connection();
 
@@ -35,5 +37,10 @@ pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>) {
         .load::<Borrows>(connection)
         .expect("Error loading current borrows");
 
-    (book_list, user_list, employee_list, borrow_list)
+    let past_borrows_list = past_borrows
+        .order(past_borrows_id)
+        .load::<PastBorrows>(connection)
+        .expect("Error loading past borrows");
+
+    (book_list, user_list, employee_list, borrow_list, past_borrows_list)
 }

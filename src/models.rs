@@ -24,6 +24,16 @@ pub struct Employees {
 }
 
 #[derive(Queryable)]
+pub struct PastBorrows {
+    pub id: i32,
+    pub user_id: i32,
+    pub book_id: i32,
+    pub condition: bool,
+    pub borrow_date: String,
+    pub return_date: String,
+}
+
+#[derive(Queryable)]
 pub struct Users {
     pub id: i32,
     pub name: String,
@@ -57,4 +67,14 @@ pub struct NewUser<'a> {
 #[diesel(table_name = employees)]
 pub struct NewEmployees<'a> {
     pub name: &'a str,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = past_borrows)]
+pub struct NewPastBorrow<'a> {
+    pub user_id: &'a i32,
+    pub book_id: &'a i32,
+    pub condition: &'a bool,
+    pub borrow_date: &'a str,
+    pub return_date: &'a str,
 }

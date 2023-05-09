@@ -6,6 +6,7 @@ pub fn status(param: &str) {
     let book_list = lists.0;
     let user_list = lists.1;
     let employee_list = lists.2;
+    let past_borrows_list = lists.4;
 
     // Display books
     if param.contains("book") || param.contains("all") {
@@ -48,5 +49,13 @@ pub fn status(param: &str) {
                 println!("{}", employee.name);
             }
         }
-    }        
-    }
+    }       
+
+    // Display borrows logs
+    if param.contains("logs") {
+        println!("--------------");
+        for log in past_borrows_list {
+            println!("User id: {} | Book id: {} | Good condition: {} | Borrow date: {} | Return date: {}", log.user_id, log.book_id, log.condition, log.borrow_date, log.return_date);
+        }       
+    } 
+}

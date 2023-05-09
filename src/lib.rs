@@ -2,7 +2,7 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
-use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser, Employees, NewEmployees};
+use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser, Employees, NewEmployees, PastBorrows, NewPastBorrow};
 
 pub mod schema;
 pub mod models;
@@ -75,4 +75,15 @@ pub fn borrow_status(conn: &mut PgConnection, id: &i32, param: &bool) {
         .set(borrowed.eq(param))
         .get_result::<Books>(conn)
         .unwrap();
+}
+
+pub fn add_past_borrow(conn: &mut PgConnection, user_id: &i32, book_id: &i32, condition: &bool, borrow_date: &str, return_date: &str) -> PastBorrows {
+    use self::schema::past_borrows;
+
+    let new_past_borrow = NewPastBorrow {user_id, book_id, condition, borrow_date, return_date};
+
+    diesel::insert_into(past_borrows::table)
+        .values(new_past_borrow)
+        .get_result(conn)
+        .expect("Error creating a past borrow")
 }
