@@ -87,3 +87,12 @@ pub fn add_past_borrow(conn: &mut PgConnection, user_id: &i32, book_id: &i32, co
         .get_result(conn)
         .expect("Error creating a past borrow")
 }
+
+pub fn update_membership(conn: &mut PgConnection, user_id: &i32, param: &bool) -> Users {
+    use self::schema::users::dsl::{users, member};
+
+    diesel::update(users.find(user_id))
+        .set(member.eq(param))
+        .get_result::<Users>(conn)
+        .unwrap()
+}

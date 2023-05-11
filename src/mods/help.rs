@@ -18,7 +18,18 @@ pub fn help() {
             - help -> show help
             - status -> get the current status of the bilio
             - status -> params ->
-                - '-id' -> current status with id
+                - '-id' -> current general status with id
+                - 'info -> current general status with all information
+                - '-book' -> books status
+                - '-user' -> users status
+                - '-empl' -> employees status
+                - '-book-id' -> books status with id
+                - '-user-id' -> users status with id
+                - '-empl-id' -> employees status with id
+                - '-logs' -> show the logs
+            
+            - update -> params -> 
+                - '-member' -> update membership
                 
             - populate -> populates the database with desired number of items
     ";

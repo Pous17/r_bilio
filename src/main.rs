@@ -52,6 +52,12 @@ fn main() {
                     _ => mods::status::status("all")
                 }
             },
+            "update" => {
+                match args {
+                    "-member" => db_mods::update_member::update_member(),
+                    _ => println!("Unknown flag, refer to 'help'")
+                }
+            }
             "populate" => db_mods::populate::populate(),
             "help" => mods::help::help(),
             "exit" => return,

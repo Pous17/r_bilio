@@ -5,3 +5,4 @@ pub mod borrow_book;
 pub mod return_book;
 pub mod fetch_db;
 pub mod populate;
+pub mod update_member;
