@@ -24,7 +24,7 @@ fn main() {
                     "-book" => db_mods::add_book::add_book(),
                     "-user" => db_mods::add_user::add_user(),
                     "-empl" => db_mods::add_employee::add_employee(),
-                    _ => println!("Unknown flag, refer to 'help'")
+                    _ => println!("Unknown flag '{}' for '{}', refer to 'help'", args, command)
                 }
             },
             "borrow" => {
@@ -34,7 +34,7 @@ fn main() {
                     "-list-date" => mods::borrow_list::list("date"),
                     "-list-id-date" => mods::borrow_list::list("id-date"),
                     "" => db_mods::borrow_book::borrow_book(),
-                    _ => println!("Unknown flag, refer to 'help'")
+                    _ => println!("Unknown flag '{}' for '{}', refer to 'help'", args, command)
                 }
             },
             "return" => db_mods::return_book::return_book(),
@@ -49,20 +49,21 @@ fn main() {
                     "-id" => mods::status::status("all -id"),
                     "-info" => mods::status::status("all -info"),
                     "-logs" => mods::status::status("logs"),
-                    _ => mods::status::status("all")
+                    "" => mods::status::status("all"),
+                    _ => println!("Unknown flag '{}' for '{}', refer to 'help'", args, command)
                 }
             },
             "update" => {
                 match args {
                     "-member" => db_mods::update_member::update_member(),
-                    _ => println!("Unknown flag, refer to 'help'")
+                    _ => println!("Unknown flag '{}' for '{}', refer to 'help'", args, command)
                 }
             }
             "populate" => db_mods::populate::populate(),
             "help" => mods::help::help(),
             "exit" => return,
             "" => {},
-            _ => println!("Unknown command, enter 'help'\n")
+            _ => println!("Unknown command '{}', enter 'help'\n", command)
         }
     }
 }
