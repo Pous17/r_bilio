@@ -13,6 +13,7 @@ pub fn help() {
                 - '-list-id' -> list of currently borrowed books with the borrow id
                 - '-list-date -> list of the currently borrowed books with the date they were borrowed
                 - '-list-id-date -> list with both the date and id
+                - '-user' -> borrow list for a specific user
 
             - exit -> quit the bilio manager
             - help -> show help

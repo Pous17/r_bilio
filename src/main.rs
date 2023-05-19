@@ -33,6 +33,7 @@ fn main() {
                     "-list-id" => mods::borrow_list::list("id"),
                     "-list-date" => mods::borrow_list::list("date"),
                     "-list-id-date" => mods::borrow_list::list("id-date"),
+                    "-user" => mods::user_borrows::user_borrows(),
                     "" => db_mods::borrow_book::borrow_book(),
                     _ => println!("Unknown flag '{}' for '{}', refer to 'help'", args, command)
                 }
