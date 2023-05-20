@@ -25,7 +25,7 @@ pub fn user_borrows() {
                     println!("{} | Borrow id: {} ", user.name, borrow.id);
                     return
                 } else {
-                    println!("this user has no borrow");
+                    println!("This user has no borrow");
                     return
                 } 
             } else {
