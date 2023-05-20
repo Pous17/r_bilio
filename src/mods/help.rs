@@ -1,5 +1,5 @@
-pub fn help() {
-    let multiline_string = "
+pub fn help(param: &str) {
+    let admin_multiline_string = "
         Here are the commands you can use:
 
             - add -> params -> 
@@ -13,10 +13,10 @@ pub fn help() {
                 - '-list-id' -> list of currently borrowed books with the borrow id
                 - '-list-date -> list of the currently borrowed books with the date they were borrowed
                 - '-list-id-date -> list with both the date and id
-                - '-user' -> borrow list for a specific user
+                - '-list-user' -> borrow list for a specific user
+            
+            - return -> return a book
 
-            - exit -> quit the bilio manager
-            - help -> show help
             - status -> get the current status of the bilio
             - status -> params ->
                 - '-id' -> current general status with id
@@ -33,6 +33,23 @@ pub fn help() {
                 - '-member' -> update membership
                 
             - populate -> populates the database with desired number of items
+            - exit -> quit the bilio manager
+            - help -> show help
     ";
-    println!("{}", multiline_string);
+
+    let user_multiline_string = "
+        Here are the commands you can use: 
+            - status -> params ->
+                - '-book' -> books status
+                - '-book-id' -> books status with id
+
+            - exit -> quit the bilio manager
+            - help -> show help
+    ";
+
+    if param == "admin" {
+        println!("{}", admin_multiline_string);
+    } else {
+        println!("{}", user_multiline_string);
+    }
 }
