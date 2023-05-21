@@ -31,7 +31,7 @@ pub fn status(param: &str) {
             if param.contains("-id") {
                 println!("{} | id: {}", user.name, user.id);
             } else if param.contains("-info") {
-                println!("{} | Is a member: {}", user.name, user.member);
+                println!("{} | Is a member: {} | Score: {}", user.name, user.member, user.score);
             } else {
                 println!("{}", user.name);
             }

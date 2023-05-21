@@ -5,6 +5,7 @@ use chrono::Local;
 
 pub fn return_book() {
     let lists = fetch();
+    let user_list = lists.1;
     let borrow_list = lists.3;
     let mut borrow_id_list = Vec::<i32>::new();
 
@@ -46,10 +47,7 @@ pub fn return_book() {
 
         if borrow_id == -1 {
             println!("Enter a valid number");
-        } else if !borrow_id_list.contains(&borrow_id) {
-            println!("The id you entered probably does not exist")
         } else {
-            
             if let Some(borrow) = borrow_list.iter().find(|x| x.id == borrow_id) {
                 let _book_id = borrow.book_id;
                 let _user_id = borrow.user_id;
@@ -59,16 +57,26 @@ pub fn return_book() {
                 borrow_status(connection, &_book_id, &false);
 
                 // Add borrow to logs
-                add_past_borrow(connection, &_user_id, &_book_id, &choice, &_borrow_date, &return_date);              
+                add_past_borrow(connection, &_user_id, &_book_id, &choice, &_borrow_date, &return_date); 
+
+                // -1 to user score
+                if choice == false {
+                    if let Some(user) = user_list.iter().find(|y| y.id == _user_id) {
+                        if user.score > 0 {
+                            down_score(connection, &_user_id);
+                            println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
+                        }
+                    }
+                }
+
+                // Delete borrow from current borrows
+                delete_borrow(connection, &borrow_id);
+                println!("You terminated Borrow with id: {}", borrow_id);
+                return
+
+            } else {
+                println!("There is no borrow corresponding to the id you provided");
             }
-
-
-
-            // Delete borrow from current borrows
-            delete_borrow(connection, &borrow_id);
-            println!("You terminated Borrow with id: {}", borrow_id);
-
-            return
         }
     }
 }

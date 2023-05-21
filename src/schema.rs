@@ -41,6 +41,7 @@ diesel::table! {
         id -> Int4,
         name -> Varchar,
         member -> Bool,
+        score -> Int4,
     }
 }
 

@@ -96,3 +96,12 @@ pub fn update_membership(conn: &mut PgConnection, user_id: &i32, param: &bool) -
         .get_result::<Users>(conn)
         .unwrap()
 }
+
+pub fn down_score(conn: &mut PgConnection, user_id: &i32) -> Users {
+    use self::schema::users::dsl::{users, score};
+
+    diesel::update(users.find(user_id))
+        .set(score.eq(score - 1))
+        .get_result::<Users>(conn)
+        .unwrap()
+}

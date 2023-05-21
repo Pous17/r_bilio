@@ -38,6 +38,7 @@ pub struct Users {
     pub id: i32,
     pub name: String,
     pub member: bool,
+    pub score: i32,
 }
 
 #[derive(Insertable)]

@@ -6,6 +6,7 @@ use chrono::{Local, Duration};
 pub fn borrow_book() {
     let lists = fetch();
     let book_list = lists.0;
+    let user_list = lists.1;
     let mut borrowed_books = Vec::<bool>::new();
 
     let connection = &mut connection();
@@ -59,17 +60,31 @@ pub fn borrow_book() {
 
         if book_id == -1 || user_id == -1 {
             println!("Enter a valid number");
-        } else if book_list[book_id as usize - 1].borrowed {
-            println!("This Book is not available");
         } else {
-            // call borrow function
-            let borrow = create_borrow(connection, &user_id, &book_id, &borrow_date);
-            println!("You borrowed {}, the borrow id is {}", book_list[book_id as usize - 1].name, borrow.id);
-            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
-
-            // change book availability status
-            borrow_status(connection, &book_id, &true);
-            return
+            if let Some(user) = user_list.iter().find(|x| x.id == user_id) {
+                if user.score > 0 {
+                    if let Some(book) = book_list.iter().find(|x| x.id == book_id) {
+                        if book.borrowed {
+                            println!("This book is not available");     
+                        } else {
+                            // call borrow function
+                            let borrow = create_borrow(connection, &user_id, &book_id, &borrow_date);
+                            println!("You borrowed {}, the borrow id is {}", book.name, borrow.id);
+                            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
+        
+                            // change book availability status
+                            borrow_status(connection, &book_id, &true);
+                            return                   
+                        }
+                    } else {
+                        println!("There is no corresponding book to the id you provided");
+                    }
+                } else {
+                    println!("This user has a score of 0, he no longer can borrow books");
+                }
+            } else {
+                println!("There is no corresponding user to the id you provided");
+            }
         }
     }
 }
