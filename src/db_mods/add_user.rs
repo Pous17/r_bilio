@@ -5,34 +5,32 @@ pub fn add_user() {
     let connection = &mut connection();
 
     loop {
-        print!("r_bilio > add user > \n");
-        stdout().flush().unwrap();
+        println!("r_bilio > add user >");
 
-        print!("Name of the user: ");
-        stdout().flush().unwrap();
-        let mut user_name = String::new();
-        stdin().read_line(&mut user_name).unwrap();
+        let user_name = input_string("Name of the user: ");
+        let membership = input_string("Does the user have a membership (y/N): ").to_lowercase();
 
-        print!("Does the user have a membership (y/N): ");
-        stdout().flush().unwrap();
-        let mut membership = String::new();
-        stdin().read_line(&mut membership).unwrap();
-
-        let choice = match membership.trim().to_lowercase().as_str() {
+        let has_membership = match membership.as_str() {
             "y" => true,
             "n" => false,
             _ => false,
         };
 
-        if user_name.trim() != "" {
-
-            let user = create_user(connection, user_name.trim_end(), &choice);
-            println!("New user {} created with id {}", user.name, user.id);
-
-            return
+        if !user_name.is_empty() {
+            let user = create_user(connection, &user_name, &has_membership);
+            println!("New user {} created with id {}\n", user.name, user.id);
+            return;
         } else {
             println!("Please enter valid data (empty names are not allowed)\n");
         }
-
     }
+}
+
+fn input_string(prompt: &str) -> String {
+    print!("{}", prompt);
+    stdout().flush().unwrap();
+
+    let mut input = String::new();
+    stdin().read_line(&mut input).unwrap();
+    input.trim().to_string()
 }
