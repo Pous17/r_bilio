@@ -71,41 +71,4 @@ pub fn status(param: &str) {
             );
         }
     }
-
-
-    // // Display users
-    // if param.contains("user") || param.contains("all") {
-    //     println!("\nthere is currently {} users", user_list.len());
-    //     println!("--------------");
-    //     for user in user_list {
-    //         if param.contains("-id") {
-    //             println!("{} | id: {}", user.name, user.id);
-    //         } else if param.contains("-info") {
-    //             println!("{} | Is a member: {} | Score: {}", user.name, user.member, user.score);
-    //         } else {
-    //             println!("{}", user.name);
-    //         }
-    //     }
-    // }
-
-    // // Dispaly employees
-    // if param.contains("empl") || param.contains("all") {
-    //     println!("\nthere is currently {} employees", employee_list.len());
-    //     println!("--------------");
-    //     for employee in employee_list {
-    //         if param.contains("-id") {
-    //             println!("{} | id: {}", employee.name, employee.id);
-    //         } else {
-    //             println!("{}", employee.name);
-    //         }
-    //     }
-    // }       
-
-    // // Display borrows logs
-    // if param.contains("logs") {
-    //     println!("--------------");
-    //     for log in past_borrows_list {
-    //         println!("User id: {} | Book id: {} | Good condition: {} | Borrow date: {} | Return date: {}", log.user_id, log.book_id, log.condition, log.borrow_date, log.return_date);
-    //     }       
-    // } 
 }
