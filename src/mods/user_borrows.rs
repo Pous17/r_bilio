@@ -17,20 +17,23 @@ pub fn user_borrows() {
         // i32
         let user_id = user_input.trim_end().parse::<i32>().unwrap_or(-1);
 
+        // TODO only shows 1 borrow
         if user_id == -1 {
             println!("Enter a valid number");
         } else {
             if let Some(user) = users_list.iter().find(|x| x.id == user_id) {
-                if let Some(borrow) = borrows_list.iter().find(|y| y.user_id == user.id) {
-                    println!("{} | Borrow id: {} ", user.name, borrow.id);
+                let borrows: Vec<_> = borrows_list.iter().filter(|y| y.user_id == user.id).collect();
+                if !borrows.is_empty() {
+                    for borrow in borrows {
+                        println!("{} | Borrow id: {}", user.name, borrow.id);
+                    }
                     return
                 } else {
                     println!("This user has no borrow");
                     return
-                } 
+                }
             } else {
                 println!("There is no user corresponding to this id");
-                return
             }
         }
     }
