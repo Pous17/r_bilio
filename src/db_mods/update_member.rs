@@ -43,8 +43,17 @@ pub fn update_member() {
         if user_id == -1 {
             println!("Enter a valid number");
         } else {
-            update_membership(connection, &user_id, &choice);
-            return
+            if let Some(user) = user_list.iter().find(|user| user.id == user_id) {
+                let text = match choice {
+                    true => "is now a member",
+                    false => "is no longer a member"
+                };
+                println!("{} {}\n", user.name, text);
+                update_membership(connection, &user.id, &choice);
+                return
+            } else {
+                println!("There is no user for the id you provided");
+            }
         }
     }
 }
