@@ -7,7 +7,6 @@ pub fn return_book() {
     let lists = fetch();
     let user_list = lists.1;
     let borrow_list = lists.3;
-    let mut borrow_id_list = Vec::<i32>::new();
 
     let connection = &mut connection();
 
@@ -15,7 +14,6 @@ pub fn return_book() {
     println!("--------------");
     for borrow in &borrow_list {
         println!("Borrow id: {} | Book id: {} | Borrower id: {} | Borrow date: {}", borrow.id, borrow.user_id, borrow.book_id, borrow.borrow_date);
-        borrow_id_list.push(borrow.id);
     }
 
     loop {
@@ -49,21 +47,21 @@ pub fn return_book() {
             println!("Enter a valid number");
         } else {
             if let Some(borrow) = borrow_list.iter().find(|x| x.id == borrow_id) {
-                let _book_id = borrow.book_id;
-                let _user_id = borrow.user_id;
-                let _borrow_date = &borrow.borrow_date;
+                let book_id = borrow.book_id;
+                let user_id = borrow.user_id;
+                let borrow_date = &borrow.borrow_date;
 
                 // Change the book availability status
-                borrow_status(connection, &_book_id, &false);
+                borrow_status(connection, &book_id, &false);
 
                 // Add borrow to logs
-                add_past_borrow(connection, &_user_id, &_book_id, &choice, &_borrow_date, &return_date); 
+                add_past_borrow(connection, &user_id, &book_id, &choice, &borrow_date, &return_date);
 
                 // -1 to user score
-                if choice == false {
-                    if let Some(user) = user_list.iter().find(|y| y.id == _user_id) {
+                if !choice {
+                    if let Some(user) = user_list.iter().find(|y| y.id == user_id) {
                         if user.score > 0 {
-                            down_score(connection, &_user_id);
+                            down_score(connection, &user_id);
                             println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
                         }
                     }
@@ -73,7 +71,6 @@ pub fn return_book() {
                 delete_borrow(connection, &borrow_id);
                 println!("You terminated Borrow with id: {}", borrow_id);
                 return
-
             } else {
                 println!("There is no borrow corresponding to the id you provided");
             }
