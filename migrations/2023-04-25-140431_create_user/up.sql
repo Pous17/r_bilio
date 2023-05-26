@@ -8,9 +8,9 @@ CREATE TABLE users (
     login VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
 );
 
 CREATE TABLE authors (
@@ -18,9 +18,9 @@ CREATE TABLE authors (
     firstname VARCHAR NOT NULL,
     lastname VARCHAR NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
 );
 
 CREATE TABLE employees (
@@ -32,9 +32,9 @@ CREATE TABLE employees (
     login VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
 );
 
 CREATE TABLE books (
@@ -43,9 +43,9 @@ CREATE TABLE books (
     active BOOLEAN NOT NULL DEFAULT TRUE,
     name VARCHAR NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
     FOREIGN KEY (author_id) REFERENCES author(id),
     author_id INT NOT NULL,
     author_firstname VARCHAR NOT NULL,
@@ -56,12 +56,12 @@ CREATE TABLE books (
 
 CREATE TABLE borrows (
     id SERIAL PRIMARY KEY,
-    borrow_date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    borrow_date VARCHAR NOT NULL,
     limit_date TIMESTAMP NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     user_id INT NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books(id),
@@ -73,11 +73,11 @@ CREATE TABLE past_borrows (
     condition BOOLEAN NOT NULL,
     borrow_date VARCHAR NOT NULL,
     limit_date VARCHAR NOT NULL,
-    return_date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    return_date VARCHAR NOT NULL,
     created_by VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
-    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_at VARCHAR NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     user_id INT NOT NULL,
     FOREIGN KEY (book_id) REFERENCES books(id),
