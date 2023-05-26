@@ -8,6 +8,9 @@ pub struct User {
     pub member: bool,
     pub firstname: String,
     pub lastname: String,
+    pub role: String,
+    pub login: String,
+    pub password: String,
     pub created_by: String,
     pub created_at: now,
     pub last_updated_by: String,
@@ -19,6 +22,7 @@ pub struct User {
 pub struct NewUser<'a> {
     pub firstname: &'a str,
     pub lastname: &'a str,
+    pub password: &'a str,
     pub created_by: &'a str,
 }
 
@@ -47,6 +51,7 @@ pub struct Employee {
     pub active: bool,
     pub firsname: String,
     pub lastname: String,
+    pub role: String,
     pub login: String,
     pub password: String,
     pub created_by: String,

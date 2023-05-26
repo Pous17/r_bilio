@@ -3,6 +3,7 @@ use std::env;
 use dotenvy::dotenv;
 use console::Term;
 use crypto_hash::{Algorithm, hex_digest};
+use r_bilio::schema::employees;
 use std::process::Command;
 
 mod mods;
@@ -10,46 +11,60 @@ mod db_mods;
 
 fn main() {
     dotenv().ok();
-
-    let env_pass: String = env::var("HASH_MDP").expect("No password has been set");
-    let _hash_env_pass = hex_digest(Algorithm::SHA256, env_pass.as_bytes());
+    
     let term = Term::stdout();
     let mut run = true;
     let mut hash_pass: String;
     let mut trimmed_hash_pass: &str;
+    let mut _hash_account_pass = &str;
+    let mut _login: &str;
     let mut _role: &str;
 
     loop {
-        Command::new("clear").status().unwrap();
-        
+        let accounts_list = db_mods::fetch_db::fetch_accounts();
+
+        _login = "";
         _role = "";
+
+        Command::new("clear").status().unwrap();
 
         println!("\n---------- R Bilio Manager ----------\n");
         println!("Enter 'help' for help.");
-        println!("\nIf you are a user, just press enter");
+        println!("\nIf you don't have an account, just press Enter");
 
-        // Password loop
+        // Login loop
         loop {
+            print!("Login: ");
+            stdout().flush().unwrap();
+            _login = term.read_line().unwrap().as_str();
+
+            if _login == "" {
+                _login = "user";
+                _role = "user";
+                println!("You are logged as a user");
+                break
+            }
+
             print!("Password: ");
             stdout().flush().unwrap();
-
             hash_pass = hex_digest(Algorithm::SHA256, term.read_secure_line().unwrap().as_bytes());
             trimmed_hash_pass = hash_pass.trim();
 
-            match trimmed_hash_pass {
-                pass if pass == _hash_env_pass => {
-                    println!("You are loged as an admin");
-                    _role = "admin";
+            if let Some(account) = accounts_list.iter().find(|account| account.login == _login) {
+                match trimmed_hash_pass {
+                    pass if trimmed_hash_pass == account.password => {
+                        println!("You are logged as {} {}", account.first_name, account.last_name);
+                        _login = account.login;
+                        _role = account.role;
+                    },
+                    _ => {
+                        println!("Wrong password. Retry.");
+                    }
                 }
-                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => { // Empty string
-                    println!("You are loged as a user");
-                    _role = "user";
-                }
-                _ => {
-                    println!("Wrong password. Retry.");
-                }
+            } else {
+                println!("Unknown login. Retry.");
             }
-            
+
             if _role != "" {
                 break
             }
@@ -57,7 +72,7 @@ fn main() {
     
         // Command loop
         loop {
-            print!("r_bilio > ");
+            print!("{} > r_bilio > ", _login);
             stdout().flush().unwrap();
 
             let mut input = String::new();

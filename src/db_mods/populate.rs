@@ -1,14 +1,14 @@
 use std::io::{stdin, stdout, Write};
 use r_bilio::*;
 
-use super::fetch_db::fetch;
+use super::fetch_db::fetch_all;
 
 pub fn populate() {
     let connection = &mut connection();
 
-    let lists = fetch();
+    let lists = fetch_all();
     
-    if !lists.0.is_empty() || !lists.1.is_empty() || !lists.2.is_empty() || !lists.5.is_empty() {
+    if !lists.0.is_empty() || !lists.1.is_empty() || !lists.2.is_empty() || !lists.3.is_empty() || !lists.4.is_empty() || !lists.5.is_empty() {
         println!("The database is not empty\n");
         return
     }
@@ -24,7 +24,7 @@ pub fn populate() {
         let number = input.trim_end().parse::<usize>().unwrap_or(0);
 
         for i in 1..=number {
-            // Author
+            // Authors
             let firstname = format!("Firstname {}", i);
             let lastname = format!("Lastname {}", i);
             create_author(connection, &firstname, &lastname);
