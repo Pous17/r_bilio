@@ -7,6 +7,7 @@ pub fn status(param: &str) {
     let user_list = lists.1;
     let employee_list = lists.2;
     let past_borrows_list = lists.4;
+    let author_list = lists.5;
 
     // Display books
     if param.contains("book") || param.contains("all") {
@@ -20,12 +21,24 @@ pub fn status(param: &str) {
             if show_id {
                 println!("{} | id: {}", book.name, book.id);
             } else if show_info {
-                println!("{} | {} | Currently borrowed: {}", book.name, book.publisher, book.borrowed);
+                println!("{} | {} | Currently borrowed: {}", book.name, format!("{} {}", book.author_firstname, book.author_lastname), book.borrowed);
             } else {
                 println!("{}", book.name);
             }
         }
     }
+    // Display author
+    if param.contains("all") {
+
+        println!("\nThere are currently {} authors", author_list.len());
+        println!("--------------");
+
+        for author in &author_list {
+            let string = format!("{} {}", author.firstname, author.lastname);
+            println!("{}", string.trim());
+        }
+    }
+
     // Display users
     if param.contains("user") || param.contains("all") {
         let show_id = param.contains("-id");

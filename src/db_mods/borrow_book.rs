@@ -38,7 +38,7 @@ pub fn borrow_book() {
         let borrow_date = date.format("%Y-%m-%d").to_string();
         let return_date = return_date.format("%Y-%m-%d").to_string();
 
-        if book_id == -1 || user_id == -1 {
+        if book_id < 0 || user_id < 0 {
             println!("Enter a valid number");
         } else {
             if let Some(user) = user_list.iter().find(|x| x.id == user_id) {
@@ -52,7 +52,7 @@ pub fn borrow_book() {
                             println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
 
                             borrow_status(connection, &book_id, &true);
-                            return;
+                            return
                         }
                     } else {
                         println!("There is no corresponding book to the id you provided");

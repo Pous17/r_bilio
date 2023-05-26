@@ -5,11 +5,20 @@ CREATE TABLE users (
     score INT NOT NULL DEFAULT 3
 );
 
+CREATE TABLE author (
+    id SERIAL PRIMARY KEY,
+    firstname VARCHAR NOT NULL,
+    lastname VARCHAR NOT NULL
+);
+
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
-    publisher VARCHAR NOT NULL,
-    borrowed BOOLEAN NOT NULL DEFAULT FALSE
+    borrowed BOOLEAN NOT NULL DEFAULT FALSE,
+    author_id INT NOT NULL,
+    author_firstname VARCHAR NOT NULL,
+    author_lastname VARCHAR NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES author(id)
 );
 
 CREATE TABLE employees (

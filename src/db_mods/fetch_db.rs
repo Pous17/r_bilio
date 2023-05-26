@@ -2,9 +2,11 @@ use self::models::*;
 use diesel::prelude::*;
 use r_bilio::*;
 
-pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<PastBorrows>) {
+pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<PastBorrows>, Vec<Author>) {
     use self::schema::books::dsl::*;
     use self::schema::books::dsl::id as book_id;
+    use self::schema::author::dsl::*;
+    use self::schema::author::dsl::id as author_id;
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
     use self::schema::employees::dsl::*;
@@ -41,6 +43,11 @@ pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<Pas
         .order(past_borrows_id)
         .load::<PastBorrows>(connection)
         .expect("Error loading past borrows");
+    
+    let author_list = author
+        .order(author_id)
+        .load::<Author>(connection)
+        .expect("Error loading author");
 
-    (book_list, user_list, employee_list, borrow_list, past_borrows_list)
+    (book_list, user_list, employee_list, borrow_list, past_borrows_list, author_list)
 }

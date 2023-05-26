@@ -40,7 +40,7 @@ pub fn update_member() {
         // i32 parsing
         let user_id = user_input.trim_end().parse::<i32>().unwrap_or(-1);
 
-        if user_id == -1 {
+        if user_id < 0 {
             println!("Enter a valid number");
         } else {
             if let Some(user) = user_list.iter().find(|user| user.id == user_id) {

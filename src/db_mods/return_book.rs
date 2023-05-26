@@ -43,7 +43,7 @@ pub fn return_book() {
         let str_date = date.format("%Y-%m-%d").to_string();
         let return_date = str_date.trim();
 
-        if borrow_id == -1 {
+        if borrow_id < 0 {
             println!("Enter a valid number");
         } else {
             if let Some(borrow) = borrow_list.iter().find(|x| x.id == borrow_id) {

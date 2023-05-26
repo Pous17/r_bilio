@@ -2,7 +2,7 @@ use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenvy::dotenv;
 use std::env;
-use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser, Employees, NewEmployees, PastBorrows, NewPastBorrow};
+use self::models::{NewBook, Books, Borrows, NewBorrow, Users, NewUser, Employees, NewEmployees, PastBorrows, NewPastBorrow, Author, NewAuthor};
 
 pub mod schema;
 pub mod models;
@@ -16,15 +16,27 @@ pub fn connection() -> PgConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-pub fn create_book(conn: &mut PgConnection, name: &str, publisher: &str, borrowed: &bool) -> Books {
+pub fn create_book(conn: &mut PgConnection, name: &str, author_id: &i32, author_firstname: &str, author_lastname: &str, borrowed: &bool) -> Books {
     use crate::schema::books;
 
-    let new_book = NewBook {name, publisher, borrowed};
+    let new_book = NewBook {name, author_id, author_firstname, author_lastname, borrowed};
 
     diesel::insert_into(books::table)
         .values(&new_book)
         .get_result(conn)
         .expect("Error adding new book")
+
+}
+
+pub fn create_author(conn: &mut PgConnection, firstname: &str, lastname: &str) -> Author {
+    use crate::schema::author;
+
+    let new_author = NewAuthor {firstname, lastname};
+    
+    diesel::insert_into(author::table)
+        .values(&new_author)
+        .get_result(conn)
+        .expect("Error inserting a author")
 }
 
 pub fn create_borrow(conn: &mut PgConnection, user_id: &i32, book_id: &i32, borrow_date: &str) -> Borrows {
