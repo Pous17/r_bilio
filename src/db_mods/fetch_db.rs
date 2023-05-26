@@ -24,7 +24,7 @@ pub fn fetch_all() -> (Vec<User>, Vec<Author>, Vec<Employee>, Vec<Book>, Vec<Bor
         .load::<User>(connection)
         .expect("Error loading users");
 
-    let authors_list = author
+    let authors_list = authors
         .order(author_id)
         .load::<Author>(connection)
         .expect("Error loading author");
@@ -74,6 +74,29 @@ pub fn fetch_accounts() -> (Vec<User>, Vec<Employee>) {
     (users_list, employees_list)
 }
 
+pub fn fetch_users_borrows() -> (Vec<User>, Vec<Borrow>) {
+    use self::schema::users::dsl::*;
+    use self::schema::users::dsl::id as user_id;
+    use self::schema::borrows::dsl::*;
+    use self::schema::borrows::dsl::id as borrow_id;
+
+    let connection = &mut connection();
+
+    // Fetching users data
+    let users_list = users
+        .order(user_id)
+        .load::<User>(connection)
+        .expect("Error loading users");
+
+    // Fetching borrows data
+    let borrows_list = borrows
+        .order(borrow_id)
+        .load::<Borrow>(connection)
+        .expect("Error loading current borrows");
+
+    (users_list, borrows_list)
+}
+
 pub fn fetch_users() -> (Vec<User>) {
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
@@ -96,7 +119,7 @@ pub fn fetch_authors() -> (Vec<Author>) {
     let connection = &mut connection();
 
     // Fetching authors data
-    let authors_list = author
+    let authors_list = authors
         .order(author_id)
         .load::<Author>(connection)
         .expect("Error loading author");

@@ -2,9 +2,9 @@ use std::io::{stdin, stdout, Write};
 use super::super::db_mods::fetch_db::*;
 
 pub fn user_borrows() {
-    let lists = fetch();
-    let users_list = lists.1;
-    let borrows_list = lists.3;
+    let lists = fetch_users_borrows();
+    let users_list = lists.0;
+    let borrows_list = lists.1;
 
     loop {
         println!("\nr_bilio > user borrow list > ");
@@ -25,7 +25,7 @@ pub fn user_borrows() {
                 let borrows: Vec<_> = borrows_list.iter().filter(|y| y.user_id == user.id).collect();
                 if !borrows.is_empty() {
                     for borrow in borrows {
-                        println!("{} | Borrow id: {}", user.name, borrow.id);
+                        println!("{} {} | Borrow id: {}", user.firstname, user.lastname, borrow.id);
                     }
                     return
                 } else {
