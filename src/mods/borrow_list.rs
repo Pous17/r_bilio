@@ -1,12 +1,11 @@
-use super::super::db_mods::fetch_db::*;
+use crate::db_mods::fetch_db::fetch_borrows;
 
 pub fn list(param: &str) {
-    let lists = fetch();
-    let borrow_list = lists.3;
+    let borrows_list = fetch_borrows();
 
-    println!("there is currently {} borrows", borrow_list.len());
+    println!("there is currently {} borrows", borrows_list.len());
     println!("--------------");
-    for borrow in borrow_list {
+    for borrow in borrows_list {
         match param {
             "id" => println!("Borrower: {} | Book: {} | Borrow id: {}", borrow.user_id, borrow.book_id, borrow.id),
             "date" => println!("Borrower: {} | Book: {} | Borrow date: {}", borrow.user_id, borrow.book_id, borrow.borrow_date),

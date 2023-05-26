@@ -1,23 +1,25 @@
-use super::super::db_mods::fetch_db::*;
+use crate::db_mods::fetch_db::*;
 
 pub fn status(param: &str) {
-    let lists = fetch();
+    // Fetching data
+    let all_lists = fetch_all();
 
-    let book_list = lists.0;
-    let user_list = lists.1;
-    let employee_list = lists.2;
-    let past_borrows_list = lists.4;
-    let author_list = lists.5;
+    let users_list = all_lists.0;
+    let authors_list = all_lists.1;
+    let employees_list = all_lists.2;
+    let books_list = all_lists.3;
+    let borrows_list = all_lists.4;
+    let past_borrows_list = all_lists.5;
 
     // Display books
     if param.contains("book") || param.contains("all") {
         let show_id = param.contains("-id");
         let show_info = param.contains("-info");
     
-        println!("\nThere are currently {} books", book_list.len());
+        println!("\nThere are currently {} books", books_list.len());
         println!("--------------");
     
-        for book in &book_list {
+        for book in &books_list {
             if show_id {
                 println!("{} | id: {}", book.name, book.id);
             } else if show_info {
@@ -30,10 +32,10 @@ pub fn status(param: &str) {
     // Display author
     if param.contains("all") {
 
-        println!("\nThere are currently {} authors", author_list.len());
+        println!("\nThere are currently {} authors", authors_list.len());
         println!("--------------");
 
-        for author in &author_list {
+        for author in &authors_list {
             let string = format!("{} {}", author.firstname, author.lastname);
             println!("{}", string.trim());
         }
@@ -44,16 +46,16 @@ pub fn status(param: &str) {
         let show_id = param.contains("-id");
         let show_info = param.contains("-info");
 
-        println!("\nThere are currently {} users", user_list.len());
+        println!("\nThere are currently {} users", users_list.len());
         println!("--------------");
 
-        for user in &user_list {
+        for user in &users_list {
             if show_id {
-                println!("{} | id: {}", user.name, user.id);
+                println!("{} {} | id: {}", user.firstname, user.lastname, user.id);
             } else if show_info {
-                println!("{} | Is a member: {} | Score: {}", user.name, user.member, user.score);
+                println!("{} {} | Is a member: {} | Score: {}", user.firstname,  user.lastname, user.member, user.score);
             } else {
-                println!("{}", user.name);
+                println!("{} {}", user.firstname, user.lastname);
             }
         }
     }
@@ -62,14 +64,14 @@ pub fn status(param: &str) {
     if param.contains("empl") || param.contains("all") {
         let show_id = param.contains("-id");
 
-        println!("\nThere are currently {} employees", employee_list.len());
+        println!("\nThere are currently {} employees", employees_list.len());
         println!("--------------");
 
-        for employee in &employee_list {
+        for employee in &employees_list {
             if show_id {
-                println!("{} | id: {}", employee.name, employee.id);
+                println!("{} {} | id: {}", employee.firstname, employee.lastname, employee.id);
             } else {
-                println!("{}", employee.name);
+                println!("{} {}", employee.firstname, employee.lastname);
             }
         }
     }

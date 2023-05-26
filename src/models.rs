@@ -57,7 +57,7 @@ pub struct NewAuthor<'a> {
 pub struct Employee {
     pub id: i32,
     pub active: bool,
-    pub firsname: String,
+    pub firstname: String,
     pub lastname: String,
     pub role: String,
     pub login: String,
