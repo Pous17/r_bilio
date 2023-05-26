@@ -41,7 +41,7 @@ fn main() {
                     println!("You are loged as an admin");
                     _role = "admin";
                 }
-                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => { // empty string
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => { // Empty string
                     println!("You are loged as a user");
                     _role = "user";
                 }
