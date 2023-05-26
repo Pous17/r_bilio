@@ -2,15 +2,15 @@ use self::models::*;
 use diesel::prelude::*;
 use r_bilio::*;
 
-pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<PastBorrows>, Vec<Author>) {
-    use self::schema::books::dsl::*;
-    use self::schema::books::dsl::id as book_id;
-    use self::schema::author::dsl::*;
-    use self::schema::author::dsl::id as author_id;
+pub fn fetch_all() -> (Vec<User>, Vec<Author>, Vec<Employee>, Vec<Book>, Vec<Borrow>, Vec<PastBorrow>) {
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
+    use self::schema::authors::dsl::*;
+    use self::schema::authors::dsl::id as author_id;
     use self::schema::employees::dsl::*;
     use self::schema::employees::dsl::id as empl_id;
+    use self::schema::books::dsl::*;
+    use self::schema::books::dsl::id as book_id;
     use self::schema::borrows::dsl::*;
     use self::schema::borrows::dsl::id as borrow_id;
     use self::schema::past_borrows::dsl::*;
@@ -18,36 +18,127 @@ pub fn fetch() -> (Vec<Books>, Vec<Users>, Vec<Employees>, Vec<Borrows>, Vec<Pas
 
     let connection = &mut connection();
 
-    // Fetching data
-    let book_list = books
-        .order(book_id)
-        .load::<Books>(connection)
-        .expect("Error loading books");
-
-    let user_list = users
+    // Fetching all data
+    let users_list = users
         .order(user_id)
-        .load::<Users>(connection)
+        .load::<User>(connection)
         .expect("Error loading users");
 
-    let employee_list = employees
-        .order(empl_id)
-        .load::<Employees>(connection)
-        .expect("Error loading employees");
-
-    let borrow_list = borrows
-        .order(borrow_id)
-        .load::<Borrows>(connection)
-        .expect("Error loading current borrows");
-
-    let past_borrows_list = past_borrows
-        .order(past_borrows_id)
-        .load::<PastBorrows>(connection)
-        .expect("Error loading past borrows");
-    
-    let author_list = author
+    let authors_list = author
         .order(author_id)
         .load::<Author>(connection)
         .expect("Error loading author");
 
-    (book_list, user_list, employee_list, borrow_list, past_borrows_list, author_list)
+    let employees_list = employees
+        .order(empl_id)
+        .load::<Employee>(connection)
+        .expect("Error loading employees");
+
+    let books_list = books
+        .order(book_id)
+        .load::<Book>(connection)
+        .expect("Error loading books");
+
+    let borrows_list = borrows
+        .order(borrow_id)
+        .load::<Borrow>(connection)
+        .expect("Error loading current borrows");
+
+    let past_borrows_list = past_borrows
+        .order(past_borrows_id)
+        .load::<PastBorrow>(connection)
+        .expect("Error loading past borrows");
+
+    (users_list, authors_list, employees_list, books_list, borrows_list, past_borrows_list)
 }
+
+pub fn fetch_users() -> (Vec<User>) {
+    use self::schema::users::dsl::*;
+    use self::schema::users::dsl::id as user_id;
+
+    let connection = &mut connection();
+
+    // Fetching users data
+    let users_list = users
+        .order(user_id)
+        .load::<User>(connection)
+        .expect("Error loading users");
+
+    (users_list)
+}
+
+pub fn fetch_authors() -> (Vec<Author>) {
+    use self::schema::authors::dsl::*;
+    use self::schema::authors::dsl::id as author_id;
+
+    let connection = &mut connection();
+
+    // Fetching authors data
+    let authors_list = author
+        .order(author_id)
+        .load::<Author>(connection)
+        .expect("Error loading author");
+
+    (authors_list)
+}
+
+pub fn fetch_employees() -> (Vec<Employee>) {
+    use self::schema::employees::dsl::*;
+    use self::schema::employees::dsl::id as empl_id;
+
+    let connection = &mut connection();
+
+    // Fetching employees data
+    let employees_list = employees
+        .order(empl_id)
+        .load::<Employee>(connection)
+        .expect("Error loading employees");
+
+    (employees_list)
+}
+
+pub fn fetch_books() -> (Vec<Book>) {
+    use self::schema::books::dsl::*;
+    use self::schema::books::dsl::id as book_id;
+
+    let connection = &mut connection();
+
+    // Fetching books data
+    let books_list = books
+        .order(book_id)
+        .load::<Book>(connection)
+        .expect("Error loading books");
+
+    (books_list)
+}
+
+pub fn fetch_borrows() -> (Vec<Borrow>) {
+    use self::schema::borrows::dsl::*;
+    use self::schema::borrows::dsl::id as borrow_id;
+
+    let connection = &mut connection();
+
+    // Fetching borrows data
+    let borrows_list = borrows
+        .order(borrow_id)
+        .load::<Borrow>(connection)
+        .expect("Error loading current borrows");
+
+    (borrows_list)
+}
+
+pub fn fetch_past_borrows() -> (Vec<PastBorrow>) {
+    use self::schema::past_borrows::dsl::*;
+    use self::schema::past_borrows::dsl::id as past_borrows_id;
+
+    let connection = &mut connection();
+
+    // Fetching past borrows data
+    let past_borrows_list = past_borrows
+        .order(past_borrows_id)
+        .load::<PastBorrow>(connection)
+        .expect("Error loading past borrows");
+
+    (past_borrows_list)
+}
+

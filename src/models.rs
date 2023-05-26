@@ -2,7 +2,7 @@ use diesel::{prelude::*, dsl::now};
 use crate::schema::*;
 
 #[derive(Queryable)]
-pub struct Users {
+pub struct User {
     pub id: i32,
     pub score: i32,
     pub member: bool,
@@ -34,7 +34,7 @@ pub struct Author {
 }
 
 #[derive(Insertable)]
-#[diesel(table_name = author)]
+#[diesel(table_name = authors)]
 pub struct NewAuthor<'a> {
     pub firstname: &'a str,
     pub lastname: &'a str,
@@ -42,7 +42,7 @@ pub struct NewAuthor<'a> {
 }
 
 #[derive(Queryable)]
-pub struct Employees {
+pub struct Employee {
     pub id: i32,
     pub active: bool,
     pub firsname: String,
@@ -57,7 +57,7 @@ pub struct Employees {
 
 #[derive(Insertable)]
 #[diesel(table_name = employees)]
-pub struct NewEmployees<'a> {
+pub struct NewEmployee<'a> {
     pub firstname: &'a str,
     pub lastname: &'a str,
     pub password: &'a str,
@@ -65,7 +65,7 @@ pub struct NewEmployees<'a> {
 }
 
 #[derive(Queryable)]
-pub struct Books {
+pub struct Book {
     pub id: i32,
     pub borrowed: bool,
     pub active: bool,
@@ -90,7 +90,7 @@ pub struct NewBook<'a> {
 }
 
 #[derive(Queryable)]
-pub struct Borrows {
+pub struct Borrow {
     pub id: i32,
     pub borrow_date: now,
     pub limit_date: now,
@@ -112,7 +112,7 @@ pub struct NewBorrow<'a> {
 }
 
 #[derive(Queryable)]
-pub struct PastBorrows {
+pub struct PastBorrow {
     pub id: i32,
     pub condition: bool,
     pub borrow_date: now,

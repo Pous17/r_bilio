@@ -10,7 +10,7 @@ CREATE TABLE users (
     last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
 );
 
-CREATE TABLE author (
+CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR NOT NULL,
     lastname VARCHAR NOT NULL,

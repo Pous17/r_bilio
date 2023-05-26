@@ -15,7 +15,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    author (id) {
+    authors (id) {
         id -> Int4,
         firstname -> Varchar,
         lastname -> Varchar,
@@ -87,17 +87,17 @@ diesel::table! {
     }
 }
 
-diesel::joinable!(books -> author (author_id));
+diesel::joinable!(books -> authors (author_id));
 diesel::joinable!(borrows -> books (book_id));
 diesel::joinable!(borrows -> users (user_id));
 diesel::joinable!(past_borrows -> books (book_id));
 diesel::joinable!(past_borrows -> users (user_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
-    author,
+    users,
+    authors,
+    employees,
     books,
     borrows,
-    employees,
     past_borrows,
-    users,
 );
