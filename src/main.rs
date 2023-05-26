@@ -3,7 +3,7 @@ use std::env;
 use dotenvy::dotenv;
 use console::Term;
 use crypto_hash::{Algorithm, hex_digest};
-use std::process::{Command};
+use std::process::Command;
 
 mod mods;
 mod db_mods;
@@ -21,7 +21,6 @@ fn main() {
 
     loop {
         Command::new("clear").status().unwrap();
-        stdout().flush().unwrap();
         
         _role = "";
 
@@ -38,11 +37,11 @@ fn main() {
             trimmed_hash_pass = hash_pass.trim();
 
             match trimmed_hash_pass {
-                trimmed_hash_pass if trimmed_hash_pass == _hash_env_pass => {
+                pass if pass == _hash_env_pass => {
                     println!("You are loged as an admin");
                     _role = "admin";
                 }
-                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => {
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => { // empty string
                     println!("You are loged as a user");
                     _role = "user";
                 }
@@ -52,7 +51,7 @@ fn main() {
             }
             
             if _role != "" {
-                break;
+                break
             }
         }
     
@@ -99,16 +98,15 @@ fn main() {
                 (_, "exit" | "logout", "") => break,
                 (_, "terminate", "process") => {
                     run = false;
-                    break;
+                    break
                 },
                 (_, "", "") => {},
                 _ => println!("Unknown command or unauthorized access"),
-
             }
         }
 
         if !run {
-            break;
+            break
         }
 
     }
