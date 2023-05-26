@@ -1,47 +1,81 @@
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
-    member BOOLEAN NOT NULL DEFAULT FALSE,
-    score INT NOT NULL DEFAULT 3
+    score INT NOT NULL DEFAULT 3,
+    member BOOLEAN NOT NULL DEFAULT TRUE,
+    firstname VARCHAR NOT NULL,
+    lastname VARCHAR NOT NULL,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
 );
 
 CREATE TABLE author (
     id SERIAL PRIMARY KEY,
     firstname VARCHAR NOT NULL,
-    lastname VARCHAR NOT NULL
-);
-
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL,
-    borrowed BOOLEAN NOT NULL DEFAULT FALSE,
-    author_id INT NOT NULL,
-    author_firstname VARCHAR NOT NULL,
-    author_lastname VARCHAR NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES author(id)
+    lastname VARCHAR NOT NULL,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
 );
 
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    firstname VARCHAR NOT NULL,
+    lastname VARCHAR NOT NULL,
+    login VARCHAR NOT NULL,
+    password VARCHAR NOT NULL,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
 );
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+    borrowed BOOLEAN NOT NULL DEFAULT FALSE,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    name VARCHAR NOT NULL,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    FOREIGN KEY (author_id) REFERENCES author(id),
+    author_id INT NOT NULL,
+    author_firstname VARCHAR NOT NULL,
+    author_lastname VARCHAR NOT NULL,
+);
+
+
 
 CREATE TABLE borrows (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    book_id INT NOT NULL,
-    borrow_date VARCHAR NOT NULL,
+    borrow_date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    limit_date TIMESTAMP NOT NULL,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)
+    user_id INT NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    book_id INT NOT NULL
 );
 
 CREATE TABLE past_borrows (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    book_id INT NOT NULL,
     condition BOOLEAN NOT NULL,
     borrow_date VARCHAR NOT NULL,
-    return_date VARCHAR NOT NULL,
+    limit_date VARCHAR NOT NULL,
+    return_date TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    created_by VARCHAR NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    last_updated_by VARCHAR NOT NULL,
+    last_updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
     FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (book_id) REFERENCES books(id)   
+    user_id INT NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES books(id),
+    book_id INT NOT NULL, 
 )

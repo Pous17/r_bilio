@@ -16,10 +16,10 @@ pub fn connection() -> PgConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-pub fn create_book(conn: &mut PgConnection, name: &str, author_id: &i32, author_firstname: &str, author_lastname: &str, borrowed: &bool) -> Books {
+pub fn create_book(conn: &mut PgConnection, name: &str, author_id: &i32, author_firstname: &str, author_lastname: &str, created_by: &str) -> Books {
     use crate::schema::books;
 
-    let new_book = NewBook {name, author_id, author_firstname, author_lastname, borrowed};
+    let new_book = NewBook {name, author_id, author_firstname, author_lastname, created_by};
 
     diesel::insert_into(books::table)
         .values(&new_book)
