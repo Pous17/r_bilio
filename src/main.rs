@@ -1,10 +1,15 @@
 use std::io::{stdin, stdout, Write};
+use std::env;
+use dotenvy::dotenv;
 use console::Term;
+use crypto_hash::{Algorithm, hex_digest};
 // use std::process::{Command};
 
 mod mods;
 mod db_mods;
 fn main() {
+    dotenv().ok();
+
     println!("\n---------- R Bilio Manager ----------\n");
     println!("Enter 'help' for help.");
 
@@ -13,15 +18,19 @@ fn main() {
     println!("\nIf you are a user, just press enter");
     print!("Role: ");
     stdout().flush().unwrap();
-    let pass = term.read_secure_line().unwrap();
+    let byte_pass: String = term.read_secure_line().unwrap();
+    let env_pass: String = env::var("HASH_MDP").expect("No password has been set");
 
+    let hash_pass = hex_digest(Algorithm::SHA256, byte_pass.as_bytes());
+    let _hash_env_pass = hex_digest(Algorithm::SHA256, env_pass.as_bytes());
+    
     let mut _role = "";
-    match pass.trim() {
-        "passroot" => {
+    match hash_pass.trim() {
+        pass if pass == _hash_env_pass => {
             println!("You are loged as an admin\n");
             _role = "admin";
         },
-        _ => {
+        _ => { // CHANGE TODO
             println!("You are loged as a user\n");
             _role = "user";
         }
