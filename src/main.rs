@@ -1,9 +1,7 @@
 use std::io::{stdin, stdout, Write};
-use std::env;
 use dotenvy::dotenv;
 use console::Term;
 use crypto_hash::{Algorithm, hex_digest};
-use r_bilio::schema::employees;
 use std::process::Command;
 
 mod mods;
@@ -16,12 +14,13 @@ fn main() {
     let mut run = true;
     let mut hash_pass: String;
     let mut trimmed_hash_pass: &str;
-    let mut _hash_account_pass = &str;
     let mut _login: &str;
     let mut _role: &str;
 
     loop {
         let accounts_list = db_mods::fetch_db::fetch_accounts();
+        let users_list = accounts_list.0;
+        let employees_list = accounts_list.1;
 
         _login = "";
         _role = "";
@@ -50,12 +49,23 @@ fn main() {
             hash_pass = hex_digest(Algorithm::SHA256, term.read_secure_line().unwrap().as_bytes());
             trimmed_hash_pass = hash_pass.trim();
 
-            if let Some(account) = accounts_list.iter().find(|account| account.login == _login) {
+            if let Some(employee) = employees_list.iter().find(|employee: &&r_bilio::models::Employee| employee.login == _login) {
                 match trimmed_hash_pass {
-                    pass if trimmed_hash_pass == account.password => {
-                        println!("You are logged as {} {}", account.first_name, account.last_name);
-                        _login = account.login;
-                        _role = account.role;
+                    pass if trimmed_hash_pass == employee.password => {
+                        println!("You are logged as {} {}", employee.firstname, employee.lastname);
+                        _login = &employee.login;
+                        _role = &employee.role;
+                    },
+                    _ => {
+                        println!("Wrong password. Retry.");
+                    }
+                }
+            } else if let Some(user) = users_list.iter().find(|user: &&r_bilio::models::User| user.login == _login) {
+                match trimmed_hash_pass {
+                    pass if trimmed_hash_pass == user.password => {
+                        println!("You are logged as {} {}", user.firstname, user.lastname);
+                        _login = &user.login;
+                        _role = &user.role;
                     },
                     _ => {
                         println!("Wrong password. Retry.");
