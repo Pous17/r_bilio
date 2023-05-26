@@ -3,7 +3,7 @@ use std::env;
 use dotenvy::dotenv;
 use console::Term;
 use crypto_hash::{Algorithm, hex_digest};
-// use std::process::{Command};
+use std::process::{Command};
 
 mod mods;
 mod db_mods;
@@ -20,7 +20,9 @@ fn main() {
     let mut _role: &str;
 
     loop {
+        Command::new("clear").status().unwrap();
         stdout().flush().unwrap();
+        
         _role = "";
 
         println!("\n---------- R Bilio Manager ----------\n");
@@ -40,7 +42,7 @@ fn main() {
                     println!("You are loged as an admin");
                     _role = "admin";
                 }
-                "" => {
+                "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" => {
                     println!("You are loged as a user");
                     _role = "user";
                 }
