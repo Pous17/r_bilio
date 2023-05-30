@@ -11,7 +11,7 @@ pub fn populate(login: &str, str_date: &str) {
 
     let lists = fetch_all();
     
-    if !lists.0.is_empty() || !lists.1.is_empty() || !lists.2.is_empty() || !lists.3.is_empty() || !lists.4.is_empty() || !lists.5.is_empty() {
+    if !lists.0.is_empty() || !lists.1.is_empty() || !lists.2.len() == 1 || !lists.3.is_empty() || !lists.4.is_empty() || !lists.5.is_empty() {
         println!("The database is not empty\n");
         return
     }
@@ -37,6 +37,22 @@ pub fn populate(login: &str, str_date: &str) {
 
         let authors_list = fetch_authors();
 
+        for i in 2..=number+1{
+            // Employees
+            let firstname = format!("EmployeeFirstname{}", i);
+            let lastname = format!("EmployeeLastName{}", i);
+            let pass = format!("empl{}", i);
+            let hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
+            create_employee(
+                connection, 
+                &firstname,
+                &lastname,
+                &hash_pass,
+                login,
+                str_date,
+            );
+        }
+
         for i in 1..=number {
             // Books
             let book_name = format!("Book {}", i);
@@ -45,33 +61,19 @@ pub fn populate(login: &str, str_date: &str) {
                 &book_name, 
                 login,
                 str_date,
-                &authors_list[i].id, 
-                &authors_list[i].firstname, 
-                &authors_list[i].lastname, 
+                &authors_list[i-1].id, 
+                &authors_list[i-1].firstname, 
+                &authors_list[i-1].lastname, 
             );
 
             // Users
-            let mut firstname = format!("UserFirstname{}", i);
-            let mut lastname = format!("UserLastName{}", i);
-            let mut pass = format!("user{}", i);
-            let mut hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
+            let firstname = format!("UserFirstname{}", i);
+            let lastname = format!("UserLastName{}", i);
+            let pass = format!("user{}", i);
+            let hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
             create_user(
                 connection, 
                 true, 
-                &firstname,
-                &lastname,
-                &hash_pass,
-                login,
-                str_date,
-            );
-
-            // Employees
-            firstname = format!("EmployeeFirstname{}", i);
-            lastname = format!("EmployeeLastName{}", i);
-            pass = format!("empl{}", i);
-            hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
-            create_employee(
-                connection, 
                 &firstname,
                 &lastname,
                 &hash_pass,

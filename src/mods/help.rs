@@ -47,7 +47,7 @@ pub fn help(param: &str) {
             - help -> show help
     ";
 
-    if param == "admin" {
+    if param == "employee" {
         println!("{}", admin_multiline_string);
     } else {
         println!("{}", user_multiline_string);

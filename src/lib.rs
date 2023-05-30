@@ -23,7 +23,7 @@ pub fn create_user(conn: &mut PgConnection, _membership: bool, _firstname: &str,
     _created_by: &str, _created_at: &str) -> User {
     use crate::schema::users;
 
-    let _login = format!("{}{}", _firstname.split_at(1).0, _lastname);
+    let _login = format!("{}{}", _firstname.split_at(1).0.to_lowercase(), _lastname.to_lowercase());
     let new_user = NewUser {
         member: &_membership,
         firstname: _firstname,
@@ -96,7 +96,7 @@ pub fn create_employee(conn: &mut PgConnection, _firstname: &str, _lastname: &st
     _created_by: &str, _created_at: &str) -> Employee {
     use crate::schema::employees;
 
-    let _login = format!("{}{}", _firstname.split_at(1).0, _lastname);
+    let _login = format!("{}{}", _firstname.split_at(1).0.to_lowercase(), _lastname.to_lowercase());
     let new_employee = NewEmployee {
         is_active: &true,
         firstname: _firstname,

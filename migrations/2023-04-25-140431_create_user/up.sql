@@ -68,3 +68,54 @@ CREATE TABLE borrows (
     FOREIGN KEY (book_id) REFERENCES books(id),
     book_id INT NOT NULL
 );
+
+
+INSERT INTO employees (
+    is_active, 
+    firstname, 
+    lastname, 
+    role, 
+    login, 
+    password, 
+    created_by, 
+    created_at, 
+    last_updated_by, 
+    last_updated_at
+    ) 
+    VALUES (
+        TRUE, 
+        'Loïc', 
+        'Bouvier', 
+        'employee', 
+        'lbouvier', 
+        '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 
+        'admin', 
+        '0000-00-00', 
+        'admin', 
+        '0000-00-00'
+    );
+
+INSERT INTO employees (
+    is_active, 
+    firstname, 
+    lastname, 
+    role, 
+    login, 
+    password, 
+    created_by, 
+    created_at, 
+    last_updated_by, 
+    last_updated_at
+    ) 
+    VALUES (
+        TRUE, 
+        'Martin', 
+        'Reix', 
+        'employee', 
+        'mreix', 
+        '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 
+        'admin', 
+        '0000-00-00', 
+        'admin', 
+        '0000-00-00'
+    );
