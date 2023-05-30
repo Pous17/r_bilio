@@ -57,7 +57,7 @@ pub struct NewAuthor<'a> {
 #[derive(Queryable)]
 pub struct Employee {
     pub id: i32,
-    pub active: bool,
+    pub is_active: bool,
     pub firstname: String,
     pub lastname: String,
     pub role: String,
@@ -72,7 +72,7 @@ pub struct Employee {
 #[derive(Insertable)]
 #[diesel(table_name = employees)]
 pub struct NewEmployee<'a> {
-    pub active: &'a bool,
+    pub is_active: &'a bool,
     pub firstname: &'a str,
     pub lastname: &'a str,
     pub role: &'a str,
@@ -88,7 +88,7 @@ pub struct NewEmployee<'a> {
 pub struct Book {
     pub id: i32,
     pub borrowed: bool,
-    pub active: bool,
+    pub is_active: bool,
     pub name: String,
     pub created_by: String,
     pub created_at: String,
@@ -103,7 +103,7 @@ pub struct Book {
 #[diesel(table_name = books)]
 pub struct NewBook<'a> {
     pub borrowed: &'a bool,
-    pub active: &'a bool,
+    pub is_active: &'a bool,
     pub name: &'a str,
     pub created_by: &'a str,
     pub created_at: &'a str,
@@ -117,11 +117,11 @@ pub struct NewBook<'a> {
 #[derive(Queryable)]
 pub struct Borrow {
     pub id: i32,
-    pub active: bool,
-    pub damaged: Option<bool>,
+    pub is_active: bool,
+    pub damaged: bool,
     pub borrow_date: String,
     pub limit_date: String,
-    pub return_date: Option<String>,
+    pub return_date: String,
     pub created_by: String,
     pub created_at: String,
     pub last_updated_by: String,
@@ -141,4 +141,11 @@ pub struct NewBorrow<'a> {
     pub last_updated_at: &'a str,
     pub user_id: &'a i32,
     pub book_id: &'a i32,
+}
+
+#[derive(Insertable)]
+#[diesel(table_name = borrows)]
+pub struct ReturnBorrow<'a> {
+    pub damaged: &'a bool,
+    pub return_date: &'a str,
 }

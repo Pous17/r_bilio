@@ -81,8 +81,8 @@ pub fn status(param: &str) {
         println!("--------------");
         for log in &past_borrows_list {
             println!(
-                "User id: {} | Book id: {} | Good condition: {} | Borrow date: {} | Return date: {}",
-                log.user_id, log.book_id, log.condition, log.borrow_date, log.return_date
+                "User id: {} | Book id: {} | Returned damaged: {} | Borrow date: {} | Return date: {}",
+                log.user_id, log.book_id, log.damaged, log.borrow_date, log.return_date
             );
         }
     }

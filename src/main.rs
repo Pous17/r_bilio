@@ -19,20 +19,20 @@ fn main() {
     let mut run = true;
     let mut hash_pass: String;
     let mut trimmed_hash_pass: &str;
-    let mut _login: &str;
+    let mut _login: String;
     let mut _role: &str;
 
     let date = Local::now();
     let limit_date = date + Duration::days(7);
-    let str_date =date.format("%Y-%m-%d").to_string().trim();
-    let str_limit_date = limit_date.format("%Y-%m-%d").to_string().trim();
+    let str_date = date.format("%Y-%m-%d").to_string();
+    let str_limit_date = limit_date.format("%Y-%m-%d").to_string();
 
     loop {
         let accounts_list = db_mods::fetch_db::fetch_accounts();
         let users_list = accounts_list.0;
         let employees_list = accounts_list.1;
 
-        _login = "";
+        _login = "".to_owned();
         _role = "";
 
         Command::new("clear").status().unwrap();
@@ -43,10 +43,10 @@ fn main() {
 
         // Login loop
         loop {
-            _login = input_string("Login: ").trim();
+            _login = input_string("Login: ");
 
             if _login == "" {
-                _login = "user";
+                _login = "user".to_owned();
                 _role = "user";
                 println!("You are logged as a user");
                 break
@@ -59,9 +59,9 @@ fn main() {
 
             if let Some(employee) = employees_list.iter().find(|employee: &&r_bilio::models::Employee| employee.login == _login) {
                 match trimmed_hash_pass {
-                    pass if trimmed_hash_pass == employee.password => {
+                    _pass if trimmed_hash_pass == employee.password => {
                         println!("You are logged as {} {}", employee.firstname, employee.lastname);
-                        _login = &employee.login;
+                        _login = employee.login.to_owned();
                         _role = &employee.role;
                     },
                     _ => {
@@ -70,9 +70,9 @@ fn main() {
                 }
             } else if let Some(user) = users_list.iter().find(|user: &&r_bilio::models::User| user.login == _login) {
                 match trimmed_hash_pass {
-                    pass if trimmed_hash_pass == user.password => {
+                    _pass if trimmed_hash_pass == user.password => {
                         println!("You are logged as {} {}", user.firstname, user.lastname);
-                        _login = &user.login;
+                        _login = user.login.clone();
                         _role = &user.role;
                     },
                     _ => {
@@ -103,16 +103,16 @@ fn main() {
             match (_role, command, args) {
 
                 // Admin only
-                ("employee", "add", "-book") => db_mods::add_book::add_book(_login, str_date),
-                ("employee", "add", "-user") => db_mods::add_user::add_user(_login, str_date),
-                ("employee", "add", "-empl") => db_mods::add_employee::add_employee(_login, str_date),
+                ("employee", "add", "-book") => db_mods::add_book::add_book(&_login, &str_date),
+                ("employee", "add", "-user") => db_mods::add_user::add_user(&_login, &str_date),
+                ("employee", "add", "-empl") => db_mods::add_employee::add_employee(&_login, &str_date),
                 ("employee", "borrow", "-list") => mods::borrow_list::list(""),
                 ("employee", "borrow", "-list-id") => mods::borrow_list::list("id"),
                 ("employee", "borrow", "-list-date") => mods::borrow_list::list("date"),
                 ("employee", "borrow", "-list-id-date") => mods::borrow_list::list("id-date"),
                 ("employee", "borrow", "-list-user") => mods::user_borrows::user_borrows(),
-                ("employee", "borrow", "") => db_mods::borrow_book::borrow_book(_login, str_date, str_limit_date),
-                ("employee", "return", _) => db_mods::return_book::return_book(_login, str_date),
+                ("employee", "borrow", "") => db_mods::borrow_book::borrow_book(&_login, &str_date, &str_limit_date),
+                ("employee", "return", _) => db_mods::return_book::return_book(&_login, &str_date),
                 ("employee", "status", "-user") => mods::status::status("user"),
                 ("employee", "status", "-empl") => mods::status::status("empl"),
                 ("employee", "status", "-user-id") => mods::status::status("user -id"),
@@ -121,8 +121,8 @@ fn main() {
                 ("employee", "status", "-info") => mods::status::status("all -info"),
                 ("employee", "status", "-logs") => mods::status::status("logs"),
                 ("employee", "status", "") => mods::status::status("all"),
-                ("employee", "update", "-member") => db_mods::update_member::update_member(_login, str_date),
-                ("employee", "populate", "") => db_mods::populate::populate(_login, str_date),
+                ("employee", "update", "-member") => db_mods::update_member::update_member(&_login, &str_date),
+                ("employee", "populate", "") => db_mods::populate::populate(&_login, &str_date),
 
                 // User authorized
                 (_, "status", "-book") => mods::status::status("book"),

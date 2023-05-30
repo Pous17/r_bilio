@@ -13,21 +13,21 @@ pub fn add_book(login: &str, str_date: &str) {
         let (mut author_firstname, mut author_lastname) = get_name("Name of the author: ");
         let mut author_id: &i32 = &0;
 
-        if name_check(author_firstname, author_lastname, true)  {
+        if name_check(&author_firstname, &author_lastname, true)  {
             let connection = &mut connection();
             let authors_list = fetch_authors();
 
             if let Some(author) = authors_list.iter().find(|x| x.lastname == author_lastname) {
-                author_firstname = &author.firstname;
-                author_lastname = &author.lastname;
+                author_firstname = author.firstname.clone();
+                author_lastname = author.lastname.clone();
                 author_id = &author.id;
             } 
 
             if author_id == &0 {
                 let author = create_author(
                     connection,
-                    author_firstname,
-                    author_lastname,
+                    &author_firstname,
+                    &author_lastname,
                     login,
                     str_date,
                 );

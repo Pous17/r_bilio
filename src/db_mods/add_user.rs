@@ -15,7 +15,7 @@ pub fn add_user(login: &str, str_date: &str) {
             _ => true,
         };
 
-        if name_check(user_firstname, user_lastname, false) {
+        if name_check(&user_firstname, &user_lastname, false) {
             let connection = &mut connection();
             let users_list = fetch_users();
 
@@ -30,9 +30,9 @@ pub fn add_user(login: &str, str_date: &str) {
             let user = create_user(
                 connection, 
                 has_membership,
-                user_firstname,
-                user_lastname,
-                hash_pass,
+                &user_firstname,
+                &user_lastname,
+                &hash_pass,
                 login,
                 str_date,
             );

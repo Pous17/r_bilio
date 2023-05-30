@@ -98,7 +98,7 @@ pub fn create_employee(conn: &mut PgConnection, _firstname: &str, _lastname: &st
 
     let _login = format!("{}{}", _firstname.split_at(1).0, _lastname);
     let new_employee = NewEmployee {
-        active: &true,
+        is_active: &true,
         firstname: _firstname,
         lastname: _lastname,
         role: "employee",
@@ -123,7 +123,7 @@ pub fn create_book(conn: &mut PgConnection, _name: &str, _created_by: &str, _cre
 
     let new_book = NewBook {
         borrowed: &false,
-        active: &true,
+        is_active: &true,
         name: _name,
         created_by: _created_by,
         created_at: _created_at,
@@ -179,11 +179,11 @@ pub fn borrow_status(conn: &mut PgConnection, id: &i32, param: &bool, updated_by
 
 
 pub fn return_borrow(conn: &mut PgConnection, id: &i32, _damaged: &bool, _return_date: &str, updated_by: &str, updated_at: &str) -> Borrow {
-    use self::schema::borrows::dsl::{borrows, active, damaged, return_date, last_updated_by, last_updated_at};
+    use self::schema::borrows::dsl::{borrows, is_active, damaged, return_date, last_updated_by, last_updated_at};
 
     diesel::update(borrows.find(id))
         .set((
-            active.eq(false),
+            is_active.eq(false),
             damaged.eq(_damaged),
             return_date.eq(_return_date),
             last_updated_by.eq(updated_by),

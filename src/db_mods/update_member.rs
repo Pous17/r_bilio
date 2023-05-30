@@ -35,8 +35,17 @@ pub fn update_member(login: &str, str_date: &str) {
                     true => "is now a member",
                     false => "is no longer a member"
                 };
+
                 println!("{} {} {}\n", user.firstname, user.lastname, text);
-                update_membership(connection, &user.id, &membership);
+                
+                update_membership(
+                    connection,
+                    &user.id,
+                    &membership,
+                    login,
+                    str_date,
+                );
+
                 return
             } else {
                 println!("There is no user for the id you provided");

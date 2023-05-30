@@ -8,7 +8,7 @@ pub fn add_employee(login: &str, str_date: &str) {
         println!("r_bilio > add employee >");
         let (employee_firstname, employee_lastname) = get_name("Name of the employee: ");
 
-        if name_check(employee_firstname, employee_lastname, false) {
+        if name_check(&employee_firstname, &employee_lastname, false) {
             let connection = &mut connection();
             let employees_list = fetch_employees();
 
@@ -18,13 +18,13 @@ pub fn add_employee(login: &str, str_date: &str) {
                 return;
             }
 
-            let hash_pass: &str = get_password();
+            let hash_pass = get_password();
 
             let employee = create_employee(
                 connection,
-                employee_firstname,
-                employee_lastname,
-                hash_pass,
+                &employee_firstname,
+                &employee_lastname,
+                &hash_pass,
                 login,
                 str_date,
             );

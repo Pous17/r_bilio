@@ -22,19 +22,18 @@ pub fn input_string(prompt: &str) -> String {
     input.trim().to_string()
 }
 
-pub fn get_name(prompt: &str) -> (&str, &str) {
+pub fn get_name(prompt: &str) -> (String, String) {
     let name = input_string(prompt);
-    let firstname = name.split(" ").next().unwrap().trim();
-    let lastname = name.split(" ").last().unwrap().trim();
+    let firstname = name.split_whitespace().next().unwrap().trim().to_string();
+    let lastname = name.split_whitespace().last().unwrap().trim().to_string();
     (firstname, lastname)
 }
 
-pub fn get_password() -> &'static str {
+pub fn get_password() -> String {
     print!("Password: ");
     stdout().flush().unwrap();
     let term = Term::stdout();
-    let hash_pass = hex_digest(Algorithm::SHA256, term.read_secure_line().unwrap().as_bytes());
-    hash_pass.trim()
+    hex_digest(Algorithm::SHA256, term.read_secure_line().unwrap().as_bytes())
 }
 
 pub fn name_check(firstname: &str, lastname: &str, author: bool) -> bool {

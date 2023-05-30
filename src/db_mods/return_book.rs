@@ -17,7 +17,7 @@ pub fn return_book(login: &str, str_date: &str) {
         println!("\nr_bilio > return book > ");
 
         let borrow_id = input_i32("Id of the borrow you want to terminate: ");
-        let mut str_condition = input_string("The book was damaged ? (Y/n)");
+        let str_condition = input_string("The book was damaged ? (Y/n)");
 
         let condition = match str_condition.to_lowercase().as_str() {
             "y" => true,
@@ -30,33 +30,39 @@ pub fn return_book(login: &str, str_date: &str) {
         } else {
             if let Some(borrow) = borrows_list.iter().find(|x| x.id == borrow_id) {
                 // Change the book availability status
-                borrow_status(connection, &borrow.book_id, &false);
-
-                // Add borrow to logs
-                create_past_borrow(
+                borrow_status(
                     connection,
-                    &condition,
-                    &borrow.borrow_date,
-                    &borrow.limit_date,
-                    str_date,
+                    &borrow.book_id,
+                    &false,
                     login,
                     str_date,
-                    &borrow.user_id,
-                    &borrow.book_id,
+                );
+
+                // Add borrow to logs
+                return_borrow(
+                    connection,
+                    &borrow.id,
+                    &condition,
+                    str_date,
+                    login,
+                    str_date
                 );
 
                 // -1 to user score
                 if !condition {
                     if let Some(user) = users_list.iter().find(|y| y.id == borrow.user_id) {
                         if user.score > 0 {
-                            down_score(connection, &borrow.user_id);
+                            down_score(
+                                connection, 
+                                &borrow.user_id,
+                                login,
+                                str_date
+                            );
                             println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
                         }
                     }
                 }
-
-                // Delete borrow from current borrows
-                delete_borrow(connection, &borrow_id);
+                
                 println!("You terminated Borrow with id: {}", borrow_id);
                 return
             } else {

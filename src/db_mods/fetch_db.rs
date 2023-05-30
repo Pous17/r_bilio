@@ -9,11 +9,11 @@ pub fn fetch_all() -> (Vec<User>, Vec<Author>, Vec<Employee>, Vec<Book>, Vec<Bor
     use self::schema::authors::dsl::*;
     use self::schema::authors::dsl::id as author_id;
     use self::schema::employees::dsl::*;
-    use self::schema::employees::dsl::id as empl_id;
+    use self::schema::employees::dsl::{id as empl_id, is_active as empl_is_active};
     use self::schema::books::dsl::*;
-    use self::schema::books::dsl::id as book_id;
+    use self::schema::books::dsl::{id as book_id, is_active as book_is_active};
     use self::schema::borrows::dsl::*;
-    use self::schema::borrows::dsl::id as borrow_id;
+    use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
 
     let connection = &mut connection();
 
@@ -29,25 +29,27 @@ pub fn fetch_all() -> (Vec<User>, Vec<Author>, Vec<Employee>, Vec<Book>, Vec<Bor
         .expect("Error loading author");
 
     let employees_list = employees
+        .filter(empl_is_active.eq(true))
         .order(empl_id)
         .load::<Employee>(connection)
         .expect("Error loading employees");
 
     let books_list = books
+        .filter(book_is_active.eq(true))
         .order(book_id)
         .load::<Book>(connection)
         .expect("Error loading books");
 
     let borrows_list = borrows
-        .filter(active.and(true))
+        .filter(borrow_is_active.eq(true))
         .order(borrow_id)
         .load::<Borrow>(connection)
         .expect("Error loading current borrows");
 
     let past_borrows_list = borrows
-        .filter(active.and(false))
+        .filter(borrow_is_active.eq(false))
         .order(borrow_id)
-        .load::<Borrows>(connection)
+        .load::<Borrow>(connection)
         .expect("Error loading past borrows");
 
     (users_list, authors_list, employees_list, books_list, borrows_list, past_borrows_list)
@@ -58,7 +60,7 @@ pub fn fetch_accounts() -> (Vec<User>, Vec<Employee>) {
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
     use self::schema::employees::dsl::*;
-    use self::schema::employees::dsl::id as empl_id;
+    use self::schema::employees::dsl::{id as empl_id, is_active as empl_is_active};
 
     let connection = &mut connection();
 
@@ -69,6 +71,7 @@ pub fn fetch_accounts() -> (Vec<User>, Vec<Employee>) {
         .expect("Error loading users");
 
     let employees_list = employees
+        .filter(empl_is_active.eq(true))
         .order(empl_id)
         .load::<Employee>(connection)
         .expect("Error loading employees");
@@ -81,7 +84,7 @@ pub fn fetch_users_borrows() -> (Vec<User>, Vec<Borrow>) {
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
     use self::schema::borrows::dsl::*;
-    use self::schema::borrows::dsl::id as borrow_id;
+    use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
 
     let connection = &mut connection();
 
@@ -93,7 +96,7 @@ pub fn fetch_users_borrows() -> (Vec<User>, Vec<Borrow>) {
 
     // Fetching borrows data
     let borrows_list = borrows
-        .filter(active.and(true))
+        .filter(borrow_is_active.eq(true))
         .order(borrow_id)
         .load::<Borrow>(connection)
         .expect("Error loading current borrows");
@@ -106,7 +109,7 @@ pub fn fetch_users_books() -> (Vec<User>, Vec<Book>) {
     use self::schema::users::dsl::*;
     use self::schema::users::dsl::id as user_id;
     use self::schema::books::dsl::*;
-    use self::schema::books::dsl::id as book_id;
+    use self::schema::books::dsl::{id as book_id, is_active as book_is_active};
 
     let connection = &mut connection();
 
@@ -118,6 +121,7 @@ pub fn fetch_users_books() -> (Vec<User>, Vec<Book>) {
 
     // Fetching books data
     let books_list = books
+        .filter(book_is_active.eq(true))
         .order(book_id)
         .load::<Book>(connection)
         .expect("Error loading books");
@@ -160,12 +164,13 @@ pub fn fetch_authors() -> Vec<Author> {
 
 pub fn fetch_employees() -> Vec<Employee> {
     use self::schema::employees::dsl::*;
-    use self::schema::employees::dsl::id as empl_id;
+    use self::schema::employees::dsl::{id as empl_id, is_active as empl_is_active};
 
     let connection = &mut connection();
 
     // Fetching employees data
     let employees_list = employees
+        .filter(empl_is_active.eq(true))
         .order(empl_id)
         .load::<Employee>(connection)
         .expect("Error loading employees");
@@ -176,12 +181,13 @@ pub fn fetch_employees() -> Vec<Employee> {
 
 pub fn fetch_books() -> Vec<Book> {
     use self::schema::books::dsl::*;
-    use self::schema::books::dsl::id as book_id;
+    use self::schema::books::dsl::{id as book_id, is_active as book_is_active};
 
     let connection = &mut connection();
 
     // Fetching books data
     let books_list = books
+        .filter(book_is_active.eq(true))
         .order(book_id)
         .load::<Book>(connection)
         .expect("Error loading books");
@@ -192,13 +198,13 @@ pub fn fetch_books() -> Vec<Book> {
 
 pub fn fetch_borrows() -> Vec<Borrow> {
     use self::schema::borrows::dsl::*;
-    use self::schema::borrows::dsl::id as borrow_id;
+    use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
 
     let connection = &mut connection();
 
     // Fetching borrows data
     let borrows_list = borrows
-        .filter(active.and(true))
+        .filter(borrow_is_active.eq(true))
         .order(borrow_id)
         .load::<Borrow>(connection)
         .expect("Error loading current borrows");
@@ -209,13 +215,13 @@ pub fn fetch_borrows() -> Vec<Borrow> {
 
 pub fn fetch_past_borrows() -> Vec<Borrow> {
     use self::schema::borrows::dsl::*;
-    use self::schema::borrows::dsl::id as borrow_id;
+    use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
 
     let connection = &mut connection();
 
     // Fetching past borrows data
     let past_borrows_list = borrows
-        .filter(active.and(false))
+        .filter(borrow_is_active.eq(false))
         .order(borrow_id)
         .load::<Borrow>(connection)
         .expect("Error loading past borrows");
