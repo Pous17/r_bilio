@@ -1,5 +1,6 @@
 use crate::db_mods::fetch_db::*;
 
+
 pub fn status(param: &str) {
     // Fetching data
     let all_lists = fetch_all();
@@ -8,7 +9,6 @@ pub fn status(param: &str) {
     let authors_list = all_lists.1;
     let employees_list = all_lists.2;
     let books_list = all_lists.3;
-    let borrows_list = all_lists.4;
     let past_borrows_list = all_lists.5;
 
     // Display books

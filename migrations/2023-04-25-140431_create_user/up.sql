@@ -52,12 +52,13 @@ CREATE TABLE books (
     author_lastname VARCHAR NOT NULL,
 );
 
-
-
 CREATE TABLE borrows (
     id SERIAL PRIMARY KEY,
+    active BOOLEAN NOT NULL DEFAULT TRUE,
+    damaged BOOLEAN,
     borrow_date VARCHAR NOT NULL,
-    limit_date TIMESTAMP NOT NULL,
+    limit_date VARCHAR NOT NULL,
+    return_date VARCHAR,
     created_by VARCHAR NOT NULL,
     created_at VARCHAR NOT NULL,
     last_updated_by VARCHAR NOT NULL,
@@ -67,19 +68,3 @@ CREATE TABLE borrows (
     FOREIGN KEY (book_id) REFERENCES books(id),
     book_id INT NOT NULL
 );
-
-CREATE TABLE past_borrows (
-    id SERIAL PRIMARY KEY,
-    condition BOOLEAN NOT NULL,
-    borrow_date VARCHAR NOT NULL,
-    limit_date VARCHAR NOT NULL,
-    return_date VARCHAR NOT NULL,
-    created_by VARCHAR NOT NULL,
-    created_at VARCHAR NOT NULL,
-    last_updated_by VARCHAR NOT NULL,
-    last_updated_at VARCHAR NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    user_id INT NOT NULL,
-    FOREIGN KEY (book_id) REFERENCES books(id),
-    book_id INT NOT NULL, 
-)

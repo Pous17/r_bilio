@@ -20,6 +20,7 @@ pub struct User {
 #[derive(Insertable)]
 #[diesel(table_name = users)]
 pub struct NewUser<'a> {
+    pub member: &'a bool,
     pub firstname: &'a str,
     pub lastname: &'a str,
     pub role: &'a str,
@@ -116,8 +117,11 @@ pub struct NewBook<'a> {
 #[derive(Queryable)]
 pub struct Borrow {
     pub id: i32,
+    pub active: bool,
+    pub damaged: Option<bool>,
     pub borrow_date: String,
     pub limit_date: String,
+    pub return_date: Option<String>,
     pub created_by: String,
     pub created_at: String,
     pub last_updated_by: String,
@@ -131,36 +135,6 @@ pub struct Borrow {
 pub struct NewBorrow<'a> {
     pub borrow_date: &'a str,
     pub limit_date: &'a str,
-    pub created_by: &'a str,
-    pub created_at: &'a str,
-    pub last_updated_by: &'a str,
-    pub last_updated_at: &'a str,
-    pub user_id: &'a i32,
-    pub book_id: &'a i32,
-}
-
-#[derive(Queryable)]
-pub struct PastBorrow {
-    pub id: i32,
-    pub condition: bool,
-    pub borrow_date: String,
-    pub limit_date: String,
-    pub return_date: String,
-    pub created_by: String,
-    pub created_at: String,
-    pub last_updated_by: String,
-    pub last_updated_at: String,
-    pub user_id: i32,
-    pub book_id: i32,
-}
-
-#[derive(Insertable)]
-#[diesel(table_name = past_borrows)]
-pub struct NewPastBorrow<'a> {
-    pub condition: &'a bool,
-    pub borrow_date: &'a str,
-    pub limit_date: &'a str,
-    pub return_date: &'a str,
     pub created_by: &'a str,
     pub created_at: &'a str,
     pub last_updated_by: &'a str,

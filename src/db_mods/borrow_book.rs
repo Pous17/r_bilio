@@ -1,18 +1,16 @@
 use r_bilio::*;
-use std::io::{stdin, stdout, Write};
-use super::fetch_db::*;
-use chrono::{Local, Duration};
 
-pub fn borrow_book() {
-    let lists = fetch();
-    let book_list = lists.0;
-    let user_list = lists.1;
+use crate::{db_mods::fetch_db::fetch_users_books, utils::input_i32};
+
+
+pub fn borrow_book(login: &str, str_borrow_date: &str, str_limit_date: &str) {
     let connection = &mut connection();
+    let (users_list, books_list) = fetch_users_books();
 
     // Available book list
     println!("\nList of currently available books");
     println!("--------------");
-    let available_books: Vec<_> = book_list
+    let available_books: Vec<_> = books_list
         .iter()
         .filter(|book| !book.borrowed)
         .map(|book| {
@@ -32,24 +30,27 @@ pub fn borrow_book() {
         let book_id = input_i32("Id of the book you want to borrow: ");
         let user_id = input_i32("Your user id: ");
 
-        let date = Local::now();
-        let return_date = date + Duration::days(7);
-
-        let borrow_date = date.format("%Y-%m-%d").to_string();
-        let return_date = return_date.format("%Y-%m-%d").to_string();
-
         if book_id < 0 || user_id < 0 {
-            println!("Enter a valid number");
+            println!("Enter valid Id numbers");
         } else {
-            if let Some(user) = user_list.iter().find(|x| x.id == user_id) {
+            if let Some(user) = users_list.iter().find(|x| x.id == user_id) {
                 if user.score > 0 {
-                    if let Some(book) = book_list.iter().find(|x| x.id == book_id) {
+                    if let Some(book) = books_list.iter().find(|x| x.id == book_id) {
                         if book.borrowed {
                             println!("This book is not available");
                         } else {
-                            let borrow = create_borrow(connection, &user_id, &book_id, &borrow_date);
+                            let borrow = create_borrow(
+                                connection, 
+                                str_borrow_date,
+                                str_limit_date,
+                                login,
+                                str_borrow_date,
+                                &user_id,
+                                &book_id,
+                            );
+                            
                             println!("You borrowed {}, the borrow id is {}", book.name, borrow.id);
-                            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", return_date);
+                            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", str_limit_date);
 
                             borrow_status(connection, &book_id, &true);
                             return
@@ -65,13 +66,4 @@ pub fn borrow_book() {
             }
         }
     }
-}
-
-fn input_i32(prompt: &str) -> i32 {
-    print!("{}", prompt);
-    stdout().flush().unwrap();
-
-    let mut input = String::new();
-    stdin().read_line(&mut input).unwrap();
-    input.trim().parse().unwrap_or(-1)
 }

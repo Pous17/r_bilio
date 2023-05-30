@@ -1,55 +1,42 @@
-use std::io::{stdin, stdout, Write};
 use r_bilio::*;
 
-use super::fetch_db::fetch;
+use crate::{db_mods::fetch_db::fetch_users, utils::{input_string, input_i32}};
 
-pub fn update_member() {
-    let lists = fetch();
-    let user_list = lists.1;
 
+pub fn update_member(login: &str, str_date: &str) {
     let connection = &mut connection();
+    let users_list = fetch_users();
 
     println!("List of members: ");
     println!("--------------");
-    for user in &user_list {
+    for user in &users_list {
         if user.member {
-            println!("{} | id: {}", user.name, user.id);
+            println!("{} {} | id: {}", user.firstname, user.lastname, user.id);
         }
     }
 
     loop {
         println!("\nr_bilio > update membership > ");
-        print!("Id of the member you want to change membership: ");
-        stdout().flush().unwrap();
 
-        let mut user_input = String::new();
-        stdin().read_line(&mut user_input).unwrap();
+        let user_id = input_i32("Id of the member you want to change membership: ");
+        let str_membership = input_string("Is the user a member now (Y/n): ");
 
-        print!("Is the user a member now (y/N): ");
-        stdout().flush().unwrap();
-
-        let mut membership = String::new();
-        stdin().read_line(&mut membership).unwrap();
-
-        let choice = match membership.trim().to_lowercase().as_str() {
+        let membership = match str_membership.trim().to_lowercase().as_str() {
             "y" => true,
             "n" => false,
-            _ => false,
+            _ => true,
         };
 
-        // i32 parsing
-        let user_id = user_input.trim_end().parse::<i32>().unwrap_or(-1);
-
         if user_id < 0 {
-            println!("Enter a valid number");
+            println!("Enter a valid Id number");
         } else {
-            if let Some(user) = user_list.iter().find(|user| user.id == user_id) {
-                let text = match choice {
+            if let Some(user) = users_list.iter().find(|user| user.id == user_id) {
+                let text = match membership {
                     true => "is now a member",
                     false => "is no longer a member"
                 };
-                println!("{} {}\n", user.name, text);
-                update_membership(connection, &user.id, &choice);
+                println!("{} {} {}\n", user.firstname, user.lastname, text);
+                update_membership(connection, &user.id, &membership);
                 return
             } else {
                 println!("There is no user for the id you provided");

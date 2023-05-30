@@ -1,11 +1,16 @@
 use std::io::{stdin, stdout, Write};
+use chrono::{Local, Duration};
 use dotenvy::dotenv;
 use console::Term;
 use crypto_hash::{Algorithm, hex_digest};
 use std::process::Command;
 
+use crate::utils::input_string;
+
 mod mods;
 mod db_mods;
+mod utils;
+
 
 fn main() {
     dotenv().ok();
@@ -16,6 +21,11 @@ fn main() {
     let mut trimmed_hash_pass: &str;
     let mut _login: &str;
     let mut _role: &str;
+
+    let date = Local::now();
+    let limit_date = date + Duration::days(7);
+    let str_date =date.format("%Y-%m-%d").to_string().trim();
+    let str_limit_date = limit_date.format("%Y-%m-%d").to_string().trim();
 
     loop {
         let accounts_list = db_mods::fetch_db::fetch_accounts();
@@ -33,9 +43,7 @@ fn main() {
 
         // Login loop
         loop {
-            print!("Login: ");
-            stdout().flush().unwrap();
-            _login = term.read_line().unwrap().as_str();
+            _login = input_string("Login: ").trim();
 
             if _login == "" {
                 _login = "user";
@@ -95,16 +103,16 @@ fn main() {
             match (_role, command, args) {
 
                 // Admin only
-                ("employee", "add", "-book") => db_mods::add_book::add_book(),
-                ("employee", "add", "-user") => db_mods::add_user::add_user(),
-                ("employee", "add", "-empl") => db_mods::add_employee::add_employee(),
+                ("employee", "add", "-book") => db_mods::add_book::add_book(_login, str_date),
+                ("employee", "add", "-user") => db_mods::add_user::add_user(_login, str_date),
+                ("employee", "add", "-empl") => db_mods::add_employee::add_employee(_login, str_date),
                 ("employee", "borrow", "-list") => mods::borrow_list::list(""),
                 ("employee", "borrow", "-list-id") => mods::borrow_list::list("id"),
                 ("employee", "borrow", "-list-date") => mods::borrow_list::list("date"),
                 ("employee", "borrow", "-list-id-date") => mods::borrow_list::list("id-date"),
                 ("employee", "borrow", "-list-user") => mods::user_borrows::user_borrows(),
-                ("employee", "borrow", "") => db_mods::borrow_book::borrow_book(),
-                ("employee", "return", _) => db_mods::return_book::return_book(),
+                ("employee", "borrow", "") => db_mods::borrow_book::borrow_book(_login, str_date, str_limit_date),
+                ("employee", "return", _) => db_mods::return_book::return_book(_login, str_date),
                 ("employee", "status", "-user") => mods::status::status("user"),
                 ("employee", "status", "-empl") => mods::status::status("empl"),
                 ("employee", "status", "-user-id") => mods::status::status("user -id"),
@@ -113,8 +121,8 @@ fn main() {
                 ("employee", "status", "-info") => mods::status::status("all -info"),
                 ("employee", "status", "-logs") => mods::status::status("logs"),
                 ("employee", "status", "") => mods::status::status("all"),
-                ("employee", "update", "-member") => db_mods::update_member::update_member(),
-                ("employee", "populate", "") => db_mods::populate::populate(),
+                ("employee", "update", "-member") => db_mods::update_member::update_member(_login, str_date),
+                ("employee", "populate", "") => db_mods::populate::populate(_login, str_date),
 
                 // User authorized
                 (_, "status", "-book") => mods::status::status("book"),

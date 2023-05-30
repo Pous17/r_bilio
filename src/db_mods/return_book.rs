@@ -1,67 +1,55 @@
 use r_bilio::*;
-use std::io::{stdin, stdout, Write};
-use super::fetch_db::*;
-use chrono::Local;
 
-pub fn return_book() {
-    let lists = fetch();
-    let user_list = lists.1;
-    let borrow_list = lists.3;
+use crate::{db_mods::fetch_db::fetch_users_borrows, utils::{input_i32, input_string}};
 
+
+pub fn return_book(login: &str, str_date: &str) {
     let connection = &mut connection();
+    let (users_list, borrows_list) = fetch_users_borrows();
 
     println!("\nList of currently borrowed books");
     println!("--------------");
-    for borrow in &borrow_list {
+    for borrow in &borrows_list {
         println!("Borrow id: {} | Book id: {} | Borrower id: {} | Borrow date: {}", borrow.id, borrow.user_id, borrow.book_id, borrow.borrow_date);
     }
 
     loop {
         println!("\nr_bilio > return book > ");
-        print!("Id of the borrow you want to terminate: ");
-        stdout().flush().unwrap();
 
-        let mut borrow_input = String::new();
-        stdin().read_line(&mut borrow_input).unwrap();
+        let borrow_id = input_i32("Id of the borrow you want to terminate: ");
+        let mut str_condition = input_string("The book was damaged ? (Y/n)");
 
-        // i32 parsing
-        let borrow_id = borrow_input.trim_end().parse::<i32>().unwrap_or(-1);
-
-        print!("Is the book returned in good condition? (Y/n)");
-        stdout().flush().unwrap();
-
-        let mut condition = String::new();
-        stdin().read_line(&mut condition).unwrap();
-
-        let choice = match condition.trim().to_lowercase().as_str() {
+        let condition = match str_condition.to_lowercase().as_str() {
             "y" => true,
             "n" => false,
             _ => true,
         };
 
-        let date = Local::now();
-        let str_date = date.format("%Y-%m-%d").to_string();
-        let return_date = str_date.trim();
-
         if borrow_id < 0 {
-            println!("Enter a valid number");
+            println!("Enter a valid Id number");
         } else {
-            if let Some(borrow) = borrow_list.iter().find(|x| x.id == borrow_id) {
-                let book_id = borrow.book_id;
-                let user_id = borrow.user_id;
-                let borrow_date = &borrow.borrow_date;
-
+            if let Some(borrow) = borrows_list.iter().find(|x| x.id == borrow_id) {
                 // Change the book availability status
-                borrow_status(connection, &book_id, &false);
+                borrow_status(connection, &borrow.book_id, &false);
 
                 // Add borrow to logs
-                add_past_borrow(connection, &user_id, &book_id, &choice, &borrow_date, &return_date);
+                create_past_borrow(
+                    connection,
+                    &condition,
+                    &borrow.borrow_date,
+                    &borrow.limit_date,
+                    str_date,
+                    login,
+                    str_date,
+                    &borrow.user_id,
+                    &borrow.book_id,
+                );
 
                 // -1 to user score
-                if !choice {
-                    if let Some(user) = user_list.iter().find(|y| y.id == user_id) {
+                if !condition {
+                    if let Some(user) = users_list.iter().find(|y| y.id == borrow.user_id) {
                         if user.score > 0 {
-                            down_score(connection, &user_id);
+                            down_score(connection, &borrow.user_id);
                             println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
                         }
                     }

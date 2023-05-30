@@ -1,9 +1,12 @@
-use std::io::{stdin, stdout, Write};
+use crypto_hash::{Algorithm, hex_digest};
 use r_bilio::*;
+
+use crate::{utils::input_string, db_mods::fetch_db::fetch_authors};
 
 use super::fetch_db::fetch_all;
 
-pub fn populate() {
+
+pub fn populate(login: &str, str_date: &str) {
     let connection = &mut connection();
 
     let lists = fetch_all();
@@ -15,44 +18,66 @@ pub fn populate() {
 
     loop {
         print!("r_bilio > populate > \n");
-        print!("How many example items do you want in each field: ");
-        stdout().flush().unwrap();
 
-        let mut input = String::new();
-        stdin().read_line(&mut input).unwrap();
-
+        let input = input_string("How many example items do you want in each field: ");
         let number = input.trim_end().parse::<usize>().unwrap_or(0);
 
         for i in 1..=number {
             // Authors
             let firstname = format!("Firstname {}", i);
             let lastname = format!("Lastname {}", i);
-            create_author(connection, &firstname, &lastname);
+            create_author(
+                connection,
+                &firstname,
+                &lastname,
+                login,
+                str_date
+            );
         }
 
-        let author_list = lists.5;
-        
-        for author in &author_list {
-            println!("{}", author.id);
-        }
+        let authors_list = fetch_authors();
 
         for i in 1..=number {
             // Books
             let book_name = format!("Book {}", i);
-            create_book(connection, &book_name, 
-                &author_list[i].id, 
-                &author_list[i].firstname, 
-                &author_list[i].lastname, 
-                &false
+            create_book(
+                connection, 
+                &book_name, 
+                login,
+                str_date,
+                &authors_list[i].id, 
+                &authors_list[i].firstname, 
+                &authors_list[i].lastname, 
             );
 
             // Users
-            let user_name = format!("User {}", i);
-            create_user(connection, &user_name, &false);
+            let mut firstname = format!("UserFirstname{}", i);
+            let mut lastname = format!("UserLastName{}", i);
+            let mut pass = format!("user{}", i);
+            let mut hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
+            create_user(
+                connection, 
+                true, 
+                &firstname,
+                &lastname,
+                &hash_pass,
+                login,
+                str_date,
+            );
 
             // Employees
-            let empl_name = format!("Employee {}", i);
-            create_employee(connection, &empl_name);
+            firstname = format!("EmployeeFirstname{}", i);
+            lastname = format!("EmployeeLastName{}", i);
+            pass = format!("empl{}", i);
+            hash_pass = hex_digest(Algorithm::SHA256, pass.as_bytes());
+            create_employee(
+                connection, 
+                &firstname,
+                &lastname,
+                &hash_pass,
+                login,
+                str_date,
+            );
         }
         println!("Database populated with {} random(s) item(s)", number);
         return
