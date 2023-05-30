@@ -46,6 +46,16 @@ pub fn update_member(login: &str, str_date: &str) {
                     str_date,
                 );
 
+                if membership {
+                    update_score(
+                        connection, 
+                        &user.id, 
+                        &3, 
+                        login,
+                        str_date
+                    );
+                }
+
                 return
             } else {
                 println!("There is no user for the id you provided");

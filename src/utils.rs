@@ -29,8 +29,11 @@ pub fn get_name(prompt: &str) -> (String, String) {
     (firstname, lastname)
 }
 
-pub fn get_password() -> String {
-    print!("Password: ");
+pub fn get_password(prompt: Option<&str>) -> String {
+    let default_prompt = "Password: ";
+    let final_prompt = prompt.unwrap_or(default_prompt);
+
+    print!("{}", final_prompt);
     stdout().flush().unwrap();
     let term = Term::stdout();
     hex_digest(Algorithm::SHA256, term.read_secure_line().unwrap().as_bytes())

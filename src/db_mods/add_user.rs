@@ -25,7 +25,7 @@ pub fn add_user(login: &str, str_date: &str) {
                 return;
             }
 
-            let hash_pass = get_password();
+            let hash_pass = get_password(None);
             
             let user = create_user(
                 connection, 

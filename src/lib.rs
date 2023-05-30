@@ -58,12 +58,12 @@ pub fn update_membership(conn: &mut PgConnection, user_id: &i32, param: &bool, u
 }
 
 
-pub fn down_score(conn: &mut PgConnection, user_id: &i32, updated_by: &str, updated_at: &str) -> User {
+pub fn update_score(conn: &mut PgConnection, user_id: &i32, update_value: &i32, updated_by: &str, updated_at: &str) -> User {
     use self::schema::users::dsl::{users, score, last_updated_by, last_updated_at};
 
     diesel::update(users.find(user_id))
         .set((
-            score.eq(score - 1),
+            score.eq(score + update_value),
             last_updated_by.eq(updated_by),
             last_updated_at.eq(updated_at)
         ))
@@ -139,6 +139,20 @@ pub fn create_book(conn: &mut PgConnection, _name: &str, _created_by: &str, _cre
         .get_result(conn)
         .expect("Error adding new book")
 
+}
+
+
+pub fn archive_book(conn: &mut PgConnection,  id: &i32, param: &bool, updated_by: &str, updated_at: &str) -> Book {
+    use self::schema::books::dsl::{books, is_active, last_updated_by, last_updated_at};
+
+    diesel::update(books.find(id))
+        .set((
+            is_active.eq(param),
+            last_updated_by.eq(updated_by),
+            last_updated_at.eq(updated_at)
+        ))
+        .get_result::<Book>(conn)
+        .unwrap()
 }
 
 

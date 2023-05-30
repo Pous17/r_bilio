@@ -96,6 +96,7 @@ fn main() {
             let mut input = String::new();
             stdin().read_line(&mut input).unwrap();
 
+            input = input.trim().to_owned().to_lowercase();
             let mut parts = input.trim().split_whitespace();
             let command = parts.next().unwrap_or("");
             let args = parts.last().unwrap_or("");

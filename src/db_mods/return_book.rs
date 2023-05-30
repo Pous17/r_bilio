@@ -19,16 +19,36 @@ pub fn return_book(login: &str, str_date: &str) {
         let borrow_id = input_i32("Id of the borrow you want to terminate: ");
         let str_condition = input_string("The book was damaged ? (Y/n)");
 
-        let condition = match str_condition.to_lowercase().as_str() {
-            "y" => true,
-            "n" => false,
-            _ => true,
-        };
-
         if borrow_id < 0 {
             println!("Enter a valid Id number");
         } else {
             if let Some(borrow) = borrows_list.iter().find(|x| x.id == borrow_id) {
+                let condition = match str_condition.to_lowercase().as_str() {
+                    "y" => true,
+                    "n" => false,
+                    _ => true,
+                };
+        
+                if condition == true {
+                    let str_remove_book = input_string("remove the book from borrowable books ? (Y/n)");
+                    let remove_book = match str_remove_book.to_lowercase().as_str() {
+                        "y" => true,
+                        "n" => false,
+                        _ => true,
+                    };
+                    
+                    if remove_book {
+                        // Change the book availability status
+                        archive_book(
+                            connection, 
+                            &borrow.book_id,
+                            &false,
+                            login,
+                            str_date,
+                        );
+                    }
+                }
+
                 // Change the book availability status
                 borrow_status(
                     connection,
@@ -52,13 +72,24 @@ pub fn return_book(login: &str, str_date: &str) {
                 if !condition {
                     if let Some(user) = users_list.iter().find(|y| y.id == borrow.user_id) {
                         if user.score > 0 {
-                            down_score(
+                            update_score(
                                 connection, 
                                 &borrow.user_id,
+                                &-1,
                                 login,
                                 str_date
                             );
                             println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
+                        }
+                        if user.score == 1 {
+                            println!("The borrower lost his membership because he has no more points.");
+                            update_membership(
+                                connection, 
+                                &borrow.user_id,
+                                &false,
+                                login,
+                                str_date
+                            );
                         }
                     }
                 }

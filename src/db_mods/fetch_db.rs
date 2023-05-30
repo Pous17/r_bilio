@@ -179,7 +179,7 @@ pub fn fetch_employees() -> Vec<Employee> {
 }
 
 
-pub fn fetch_books() -> Vec<Book> {
+pub fn fetch_books_author_id(_author_id: &i32) -> Vec<Book> {
     use self::schema::books::dsl::*;
     use self::schema::books::dsl::{id as book_id, is_active as book_is_active};
 
@@ -187,7 +187,24 @@ pub fn fetch_books() -> Vec<Book> {
 
     // Fetching books data
     let books_list = books
-        .filter(book_is_active.eq(true))
+    .filter(book_is_active.eq(true).and(author_id.eq(_author_id)))
+        .order(book_id)
+        .load::<Book>(connection)
+        .expect("Error loading books");
+
+    books_list
+}
+
+
+pub fn fetch_books_author_name(_author_lastname: &str) -> Vec<Book> {
+    use self::schema::books::dsl::*;
+    use self::schema::books::dsl::{id as book_id, is_active as book_is_active};
+
+    let connection = &mut connection();
+
+    // Fetching books data
+    let books_list = books
+        .filter(book_is_active.eq(true).and(author_lastname.eq(_author_lastname)))
         .order(book_id)
         .load::<Book>(connection)
         .expect("Error loading books");
@@ -213,19 +230,19 @@ pub fn fetch_borrows() -> Vec<Borrow> {
 }
 
 
-pub fn fetch_past_borrows() -> Vec<Borrow> {
-    use self::schema::borrows::dsl::*;
-    use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
+// pub fn fetch_past_borrows() -> Vec<Borrow> {
+//     use self::schema::borrows::dsl::*;
+//     use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
 
-    let connection = &mut connection();
+//     let connection = &mut connection();
 
-    // Fetching past borrows data
-    let past_borrows_list = borrows
-        .filter(borrow_is_active.eq(false))
-        .order(borrow_id)
-        .load::<Borrow>(connection)
-        .expect("Error loading past borrows");
+//     // Fetching past borrows data
+//     let past_borrows_list = borrows
+//         .filter(borrow_is_active.eq(false))
+//         .order(borrow_id)
+//         .load::<Borrow>(connection)
+//         .expect("Error loading past borrows");
 
-    past_borrows_list
-}
+//     past_borrows_list
+// }
 

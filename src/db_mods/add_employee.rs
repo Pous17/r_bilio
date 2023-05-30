@@ -18,7 +18,7 @@ pub fn add_employee(login: &str, str_date: &str) {
                 return;
             }
 
-            let hash_pass = get_password();
+            let hash_pass = get_password(None);
 
             let employee = create_employee(
                 connection,
