@@ -7,6 +7,9 @@ pub fn help(param: &str) {
                 - '-user' -> add a user
                 - '-empl' -> add a employee
 
+            - author -> params -> 
+                - '-book' -> list of books by author
+
             - borrow -> borrow a book
             - borrow -> params -> 
                 - '-list' -> list of currently borrowed books
@@ -20,17 +23,28 @@ pub fn help(param: &str) {
             - status -> get the current status of the bilio
             - status -> params ->
                 - '-id' -> current general status with id
-                - 'info -> current general status with all information
+                - '-info -> current general status with all information
+                - '-author' -> list of authors
+                - '-author-id' -> list of authors with id
                 - '-book' -> books status
-                - '-user' -> users status
-                - '-empl' -> employees status
                 - '-book-id' -> books status with id
+                - '-book-info' -> books status with all information
+                - '-user' -> users status
                 - '-user-id' -> users status with id
+                - '-user-info' -> users status with info
+                - '-empl' -> employees status
                 - '-empl-id' -> employees status with id
-                - '-logs' -> show the logs
+                - '-empl-info' -> employees status with info
+                - '-borrow' -> borrows status
+                - '-borrow-id' -> borrows status with id
+                - '-borrow-info' -> borrows status with info
+                - '-pastborrow' -> past borrows status
+                - '-pastborrow-id' -> past borrows status with id
+                - '-pastborrow-info' -> past borrows status with info
             
             - update -> params -> 
                 - '-member' -> update membership
+                - '-password' -> update password
                 
             - populate -> populates the database with desired number of items
             - exit -> quit the bilio manager
@@ -46,7 +60,9 @@ pub fn help(param: &str) {
                 - '-book' -> books status
                 - '-book-id' -> books status with id
 
-            - password -> update your password
+            - 'update' -> params ->
+                - '-password' -> update your password
+            
             - exit -> quit the bilio manager
             - help -> show help
     ";

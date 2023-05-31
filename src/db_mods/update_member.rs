@@ -54,6 +54,7 @@ pub fn update_member(login: &str, str_date: &str) {
                         login,
                         str_date
                     );
+                    println!("{} {} is now a member and has been credited 3 points.", user.firstname, user.lastname);
                 }
 
                 return

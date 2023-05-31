@@ -37,7 +37,7 @@ pub fn populate(login: &str, str_date: &str) {
 
         let authors_list = fetch_authors();
 
-        for i in 2..=number+1{
+        for i in 3..=number+2{
             // Employees
             let firstname = format!("EmployeeFirstname{}", i);
             let lastname = format!("EmployeeLastName{}", i);
