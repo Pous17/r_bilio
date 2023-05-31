@@ -218,13 +218,14 @@ pub fn borrow_status(conn: &mut PgConnection, id: &i32, param: &bool, updated_by
 }
 
 
-pub fn return_borrow(conn: &mut PgConnection, id: &i32, _damaged: &bool, _return_date: &str, updated_by: &str, updated_at: &str) -> Borrow {
-    use self::schema::borrows::dsl::{borrows, is_active, damaged, return_date, last_updated_by, last_updated_at};
+pub fn return_borrow(conn: &mut PgConnection, id: &i32, _damaged: &bool, _late: &bool, _return_date: &str, updated_by: &str, updated_at: &str) -> Borrow {
+    use self::schema::borrows::dsl::{borrows, is_active, damaged, late, return_date, last_updated_by, last_updated_at};
 
     diesel::update(borrows.find(id))
         .set((
             is_active.eq(false),
             damaged.eq(_damaged),
+            late.eq(_late),
             return_date.eq(_return_date),
             last_updated_by.eq(updated_by),
             last_updated_at.eq(updated_at)

@@ -139,7 +139,7 @@ pub fn status(param: &str) {
         if show_id {
             println!("User id | Book id | Borrow id");
         } else if show_info {
-            println!("User id | Book id | Return date | Damaged | Borrow id");
+            println!("User id | Book id | Damaged | Late | Return Date | Borrow id");
         } else {
             println!("User id | Book id");
         }
@@ -148,7 +148,7 @@ pub fn status(param: &str) {
             if show_id {
                 println!("{} | {} | {}", borrow.user_id, borrow.book_id, borrow.id);
             } else if show_info {
-                println!("{} | {} | {} | {} | {}", borrow.user_id, borrow.book_id, borrow.return_date, borrow.damaged, borrow.id);
+                println!("{} | {} | {} | {} | {} | {}", borrow.user_id, borrow.book_id, borrow.damaged, borrow.late, borrow.return_date, borrow.id);
             } else {
                 println!("{} | {}", borrow.user_id, borrow.book_id);
             }

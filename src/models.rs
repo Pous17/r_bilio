@@ -119,6 +119,7 @@ pub struct Borrow {
     pub id: i32,
     pub is_active: bool,
     pub damaged: bool,
+    pub late: bool,
     pub borrow_date: String,
     pub limit_date: String,
     pub return_date: String,
@@ -147,5 +148,6 @@ pub struct NewBorrow<'a> {
 #[diesel(table_name = borrows)]
 pub struct ReturnBorrow<'a> {
     pub damaged: &'a bool,
+    pub late: &'a bool,
     pub return_date: &'a str,
 }

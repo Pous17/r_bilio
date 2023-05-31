@@ -17,19 +17,33 @@ pub fn return_book(login: &str, str_date: &str) {
         println!("\nr_bilio > return book > ");
 
         let borrow_id = input_i32("Id of the borrow you want to terminate: ");
-        let str_condition = input_string("The book was damaged ? (Y/n)");
-
         if borrow_id < 0 {
             println!("Enter a valid Id number");
         } else {
             if let Some(borrow) = borrows_list.iter().find(|x| x.id == borrow_id) {
-                let condition = match str_condition.to_lowercase().as_str() {
-                    "y" => true,
+                let mut malus = 0;
+
+                let str_damaged = input_string("The book was damaged ? (y/N)");
+                let damaged = match str_damaged.to_lowercase().as_str() {
+                    "y" => {
+                        malus -= 1;
+                        true
+                    },
                     "n" => false,
-                    _ => true,
+                    _ => false,
+                };
+
+                let str_late = input_string("The book was returned late ? (y/N)");
+                let late = match str_late.to_lowercase().as_str() {
+                    "y" => {
+                        malus -= 1;
+                        true
+                    },
+                    "n" => false,
+                    _ => false,
                 };
         
-                if condition == true {
+                if damaged {
                     let str_remove_book = input_string("remove the book from borrowable books ? (Y/n)");
                     let remove_book = match str_remove_book.to_lowercase().as_str() {
                         "y" => true,
@@ -62,26 +76,27 @@ pub fn return_book(login: &str, str_date: &str) {
                 return_borrow(
                     connection,
                     &borrow.id,
-                    &condition,
+                    &damaged,
+                    &late,
                     str_date,
                     login,
                     str_date
                 );
 
                 // -1 to user score
-                if !condition {
+                if damaged || late {
                     if let Some(user) = users_list.iter().find(|y| y.id == borrow.user_id) {
                         if user.score > 0 {
                             update_score(
                                 connection, 
                                 &borrow.user_id,
-                                &-1,
+                                &malus,
                                 login,
                                 str_date
                             );
                             println!("\nDue to the bad condition the book was returned in, the borrower lost 1 score point");
                         }
-                        if user.score == 1 {
+                        if user.score < 1 {
                             println!("The borrower lost his membership because he has no more points.");
                             update_membership(
                                 connection, 

@@ -33,6 +33,7 @@ diesel::table! {
         id -> Int4,
         is_active -> Bool,
         damaged -> Bool,
+        late -> Bool,
         borrow_date -> Varchar,
         limit_date -> Varchar,
         return_date -> Varchar,

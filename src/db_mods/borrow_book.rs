@@ -49,8 +49,8 @@ pub fn borrow_book(login: &str, str_borrow_date: &str, str_limit_date: &str) {
                                 &book_id,
                             );
                             
-                            println!("You borrowed {}, the borrow id is {}", book.name, borrow.id);
-                            println!("You can borrow books up to 7 days, therefore, this book shall be returned on {}", str_limit_date);
+                            println!("{} {} borrowed {}, the borrow id is {}", user.firstname, user.lastname, book.name, borrow.id);
+                            println!("Books can be borrowed up to 7 days, therefore, this book shall be returned on {}", str_limit_date);
 
                             borrow_status(
                                 connection,
