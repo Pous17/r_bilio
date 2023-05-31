@@ -132,7 +132,7 @@ pub fn status(param: &str) {
     }
 
     // Display past borrows
-    if param.contains("pastborrow") || param.contains("all") {
+    if param.contains("past") || param.contains("all") {
         println!("\nThere are currently {} past borrows", past_borrows_list.len());
         println!("--------------");
 

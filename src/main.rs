@@ -126,9 +126,9 @@ fn main() {
                 ("employee", "status", "-borrow") => mods::status::status("borrow"),
                 ("employee", "status", "-borrow-id") => mods::status::status("borrow -id"),
                 ("employee", "status", "-borrow-info") => mods::status::status("borrow -info"),
-                ("employee", "status", "-pastborrow") => mods::status::status("pastborrow"),
-                ("employee", "status", "-pastborrow-id") => mods::status::status("pastborrow -id"),
-                ("employee", "status", "-pastborrow-info") => mods::status::status("pastborrow -info"),
+                ("employee", "status", "-pastborrow") => mods::status::status("past"),
+                ("employee", "status", "-pastborrow-id") => mods::status::status("past -id"),
+                ("employee", "status", "-pastborrow-info") => mods::status::status("past -info"),
                 ("employee", "update", "-member") => db_mods::update_member::update_member(&_login, &str_date),
                 ("employee", "populate", "") => db_mods::populate::populate(&_login, &str_date),
 
