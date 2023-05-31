@@ -19,6 +19,32 @@ pub fn connection() -> PgConnection {
 }
 
 
+pub fn update_password(conn: &mut PgConnection, account_id: &i32, new_password: &str, is_user: bool, updated_by: &str, updated_at: &str) {
+    use self::schema::users::dsl::{users, password as user_password, last_updated_by as user_last_updated_by, last_updated_at as user_last_updated_at};
+    use self::schema::employees::dsl::{employees, password as empl_password, last_updated_by as empl_last_updated_by, last_updated_at as empl_last_updated_at};
+
+    if is_user {
+        diesel::update(users.find(account_id))
+            .set((
+                user_password.eq(new_password),
+                user_last_updated_by.eq(updated_by),
+                user_last_updated_at.eq(updated_at)
+            ))
+            .get_result::<User>(conn)
+            .unwrap();
+    } else {
+        diesel::update(employees.find(account_id))
+            .set((
+                empl_password.eq(new_password),
+                empl_last_updated_by.eq(updated_by),
+                empl_last_updated_at.eq(updated_at)
+            ))
+            .get_result::<Employee>(conn)
+            .unwrap();
+    }
+}
+
+
 pub fn create_user(conn: &mut PgConnection, _membership: bool, _firstname: &str, _lastname: &str, _password: &str,
     _created_by: &str, _created_at: &str) -> User {
     use crate::schema::users;

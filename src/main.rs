@@ -128,6 +128,8 @@ fn main() {
                 // User authorized
                 (_, "status", "-book") => mods::status::status("book"),
                 (_, "status", "-book-id") => mods::status::status("book -id"),
+                (_, "author", "-book") => mods::author_books_list::author_books(),
+                (_, "password", "") => db_mods::update_password::update_pass(&_login, &str_date),
                 (_, "help", "") => mods::help::help(_role),
                 (_, "exit" | "logout", "") => break,
                 (_, "terminate", "process") => {
