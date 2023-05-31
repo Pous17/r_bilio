@@ -2,7 +2,6 @@ use std::io::{stdout, stdin, Write};
 
 use console::Term;
 use crypto_hash::{hex_digest, Algorithm};
-use regex::Regex;
 
 pub fn input_i32(prompt: &str) -> i32 {
     print!("{}", prompt);
@@ -24,8 +23,11 @@ pub fn input_string(prompt: &str) -> String {
 
 pub fn get_name(prompt: &str) -> (String, String) {
     let name = input_string(prompt);
-    let firstname = name.split_whitespace().next().unwrap().trim().to_string();
+    let mut firstname = name.split_whitespace().next().unwrap().trim().to_string();
     let lastname = name.split_whitespace().last().unwrap().trim().to_string();
+    if firstname == lastname {
+        firstname = "".to_string();
+    }
     (firstname, lastname)
 }
 
@@ -40,13 +42,8 @@ pub fn get_password(prompt: Option<&str>) -> String {
 }
 
 pub fn name_check(firstname: &str, lastname: &str, author: bool) -> bool {
-    let pattern = Regex::new(r"^[a-zA-Z]{1,}$").unwrap();
-
     if (firstname.is_empty() && !author) || lastname.is_empty() {
         println!("Please enter valid data (empty names are not allowed)\n");
-        false
-    } else if (!pattern.is_match(firstname) && !author) || !pattern.is_match(lastname) {
-        println!("Please enter valid data (firstname and lastname can only contains letters)\n");
         false
     } else if firstname == lastname {
         println!("Please enter valid data (firstname and lastname can't be the same)\n");

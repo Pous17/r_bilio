@@ -24,8 +24,8 @@ pub fn populate(login: &str, str_date: &str) {
 
         for i in 1..=number {
             // Authors
-            let firstname = format!("Firstname {}", i);
-            let lastname = format!("Lastname {}", i);
+            let firstname = format!("AuthorFirstName{}", i);
+            let lastname = format!("AuthorLastName{}", i);
             create_author(
                 connection,
                 &firstname,
@@ -55,7 +55,7 @@ pub fn populate(login: &str, str_date: &str) {
 
         for i in 1..=number {
             // Books
-            let book_name = format!("Book {}", i);
+            let book_name = format!("BookName{}", i);
             create_book(
                 connection, 
                 &book_name, 

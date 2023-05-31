@@ -6,7 +6,7 @@ pub fn author_books() {
 
     let books_list: Vec<Book>;
 
-    let choice = input_string("Do you want to search by id (y) or by name (n)? (y/N)");
+    let choice = input_string("Do you want to search by id(y) or by name(n)? (y/N) ");
     let by_id: bool;
     let search_input: String;
 
@@ -20,7 +20,6 @@ pub fn author_books() {
             search_input = input_string("Enter author name: ");
         }
         _ => {
-            println!("Invalid choice, defaulting to name");
             search_input = input_string("Enter author name: ");
             by_id = false;
         }

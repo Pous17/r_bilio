@@ -228,21 +228,3 @@ pub fn fetch_borrows() -> Vec<Borrow> {
 
     borrows_list
 }
-
-
-// pub fn fetch_past_borrows() -> Vec<Borrow> {
-//     use self::schema::borrows::dsl::*;
-//     use self::schema::borrows::dsl::{id as borrow_id, is_active as borrow_is_active};
-
-//     let connection = &mut connection();
-
-//     // Fetching past borrows data
-//     let past_borrows_list = borrows
-//         .filter(borrow_is_active.eq(false))
-//         .order(borrow_id)
-//         .load::<Borrow>(connection)
-//         .expect("Error loading past borrows");
-
-//     past_borrows_list
-// }
-
