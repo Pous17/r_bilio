@@ -39,10 +39,14 @@ pub fn help(param: &str) {
 
     let user_multiline_string = "
         Here are the commands you can use: 
+            - author -> params -> 
+                - '-book' -> list of books by author
+
             - status -> params ->
                 - '-book' -> books status
                 - '-book-id' -> books status with id
 
+            - password -> update your password
             - exit -> quit the bilio manager
             - help -> show help
     ";
