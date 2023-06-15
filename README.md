@@ -1,4 +1,5 @@
 # Rbiblio
+This project was a school project where we were asked to provide a system to manage a database. In this case, a database that would be used by a Library. When most of my classmates did web interfaces, i chose to create a CLI in Rust, for efficiency reasons, as we wanted our system to be scalable since a Library can have thousands of entries. 
 
 ## Install
 ### Rust
